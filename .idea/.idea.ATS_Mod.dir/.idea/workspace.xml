@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="230d1ff6-e666-4a3f-bc2d-b0bc56953d7f" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/.idea.ATS_Mod.dir/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/.idea.ATS_Mod.dir/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/.idea.ATS_Mod.dir/.idea/indexLayout.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/.idea.ATS_Mod.dir/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Folder.DotSettings.user" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Scripts/ADrawable.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Scripts/Configs.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Scripts/DrawableGUI.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Scripts/Hotkeys/HotkeyController.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Scripts/Popups/BaseWindow.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Scripts/Popups/ButtonListWindow.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Scripts/Popups/DeckEditorPopup/DeckEditorPopup.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Scripts/Popups/GameBoard/BoardCardEditorPopup.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Scripts/Popups/GameBoard/GameBoardPopup.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Scripts/Popups/GameInfoWindow.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Scripts/Popups/HotkeysPopup.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Scripts/Popups/MainPopup/Act1/ATSGameMode.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Scripts/Popups/MainPopup/Act1/ATSGameSequence.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Scripts/Popups/MainPopup/Act1/ATSMapSequence.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Scripts/Popups/MainPopup/AllActs/AllGameModes.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Scripts/Popups/MainPopup/BaseGameMode.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Scripts/Popups/MainPopup/BaseGameSequence.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Scripts/Popups/MainPopup/BaseMapSequence.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Scripts/Popups/MainPopup/DebugWindow.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Scripts/Popups/ScriptDebugPopup.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Scripts/Popups/WindowBlocker.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Scripts/Utils/Helpers.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Scripts/Utils/Helpers_ATS.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/Debug/netstandard2.0/ATS_Mod.deps.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/Debug/netstandard2.0/ATS_Mod.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/Debug/netstandard2.0/ATS_Mod.pdb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/Debug/netstandard2.0/AWSSDK.CognitoIdentity.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/Debug/netstandard2.0/AWSSDK.Core.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/Debug/netstandard2.0/AWSSDK.Kinesis.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/Debug/netstandard2.0/AWSSDK.SecurityToken.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/Debug/netstandard2.0/Assembly-CSharp-firstpass.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/Debug/netstandard2.0/Assembly-CSharp.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/Debug/netstandard2.0/AstarPathfindingProject.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/Debug/netstandard2.0/CgSDK.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/Debug/netstandard2.0/Cinemachine.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/Debug/netstandard2.0/DOTween.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/Debug/netstandard2.0/Drawing.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/Debug/netstandard2.0/GdkUtilities.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/Debug/netstandard2.0/Newtonsoft.Json.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/Debug/netstandard2.0/PackageTools.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/Debug/netstandard2.0/Pathfinding.ClipperLib.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/Debug/netstandard2.0/Pathfinding.Ionic.Zip.Reduced.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/Debug/netstandard2.0/Pathfinding.Poly2Tri.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/Debug/netstandard2.0/QFSW.QC.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/Debug/netstandard2.0/Sirenix.OdinInspector.Attributes.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/Debug/netstandard2.0/Sirenix.Serialization.Config.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/Debug/netstandard2.0/Sirenix.Serialization.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/Debug/netstandard2.0/Sirenix.Utilities.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/Debug/netstandard2.0/System.Configuration.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/Debug/netstandard2.0/System.Security.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/Debug/netstandard2.0/UniRx.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/Debug/netstandard2.0/UniTask.Addressables.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/Debug/netstandard2.0/UniTask.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/Debug/netstandard2.0/Unity.Addressables.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/Debug/netstandard2.0/Unity.Burst.Unsafe.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/Debug/netstandard2.0/Unity.Burst.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/Debug/netstandard2.0/Unity.Collections.LowLevel.ILSupport.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/Debug/netstandard2.0/Unity.Collections.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/Debug/netstandard2.0/Unity.InputSystem.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/Debug/netstandard2.0/Unity.Mathematics.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/Debug/netstandard2.0/Unity.RenderPipeline.Universal.ShaderLibrary.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/Debug/netstandard2.0/Unity.RenderPipelines.Core.Runtime.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/Debug/netstandard2.0/Unity.RenderPipelines.Universal.Runtime.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/Debug/netstandard2.0/Unity.ResourceManager.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/Debug/netstandard2.0/Unity.TextMeshPro.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/Debug/netstandard2.0/Unity.Timeline.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/Debug/netstandard2.0/UnityEngine.UI.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/Debug/netstandard2.0/com.rlabrecque.steamworks.net.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/obj/Debug/netstandard2.0/.NETStandard,Version=v2.0.AssemblyAttributes.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/obj/Debug/netstandard2.0/ATS_Mod.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/obj/Debug/netstandard2.0/ATS_Mod.pdb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/obj/Debug/netstandard2.0/ModTempl.55303C39.Up2Date" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/obj/Debug/netstandard2.0/ModTemplate.AssemblyInfo.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/obj/Debug/netstandard2.0/ModTemplate.AssemblyInfoInputs.cache" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/obj/Debug/netstandard2.0/ModTemplate.GeneratedMSBuildEditorConfig.editorconfig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/obj/Debug/netstandard2.0/ModTemplate.assets.cache" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/obj/Debug/netstandard2.0/ModTemplate.csproj.AssemblyReference.cache" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/obj/Debug/netstandard2.0/ModTemplate.csproj.CoreCompileInputs.cache" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/obj/Debug/netstandard2.0/ModTemplate.csproj.FileListAbsolute.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/obj/Debug/netstandard2.0/ModTemplate.sourcelink.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/obj/Debug/netstandard2.0/PluginInfo.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/obj/Debug/netstandard2.0/publicized/Assembly-CSharp.dll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/obj/Debug/netstandard2.0/publicized/Assembly-CSharp.dll.md5" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/obj/ModTemplate.csproj.nuget.dgspec.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/obj/ModTemplate.csproj.nuget.g.props" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/obj/ModTemplate.csproj.nuget.g.targets" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/obj/project.assets.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/obj/project.nuget.cache" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/obj/project.packagespec.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/obj/rider.project.model.nuget.info" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/obj/rider.project.restore.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ModTemplate.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/ModTemplate.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plugin.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Plugin.cs" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/90e9fbda0e7a49f1b66081d6d0c242243b7400/c4/c073e4ab/MainController.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/90e9fbda0e7a49f1b66081d6d0c242243b7400/d9/ae9131a7/MB.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/90e9fbda0e7a49f1b66081d6d0c242243f8c00/52/181272b4/GameState.cs" root0="SKIP_HIGHLIGHTING" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 7
+}</component>
+  <component name="ProjectId" id="2efkBhbKgnKtwCS9sh0Dn2uQmFE" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="autoscrollFromSource" value="true" />
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "ignore.virus.scanning.warn.message": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "rider.external.source.directories": [
+      "C:\\Users\\james\\AppData\\Roaming\\JetBrains\\Rider2023.3\\resharper-host\\DecompilerCache",
+      "C:\\Users\\james\\AppData\\Roaming\\JetBrains\\Rider2023.3\\resharper-host\\SourcesCache",
+      "C:\\Users\\james\\AppData\\Local\\Symbols\\src"
+    ]
+  }
+}]]></component>
+  <component name="RunManager">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
+      <option name="allowRunningInParallel" value="false" />
+      <option name="listenPortForConnections" value="false" />
+      <option name="pid" />
+      <option name="projectPathOnTarget" />
+      <option name="selectedOptions">
+        <list />
+      </option>
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="230d1ff6-e666-4a3f-bc2d-b0bc56953d7f" name="Changes" comment="" />
+      <created>1712302885356</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1712302885356</updated>
+      <workItem from="1712302886440" duration="1580000" />
+      <workItem from="1712304789523" duration="1790000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+  </component>
+</project>

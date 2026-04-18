@@ -1,0 +1,207 @@
+using System;
+using System.Linq;
+using System.Collections.Generic;
+using UnityEngine.Pool;
+using Eremite;
+{USINGS}
+
+// ReSharper disable All
+
+namespace ATS_API.Helpers;
+
+{CLASS_HEADER}
+public enum {CLASSNAME}
+{
+	/// <summary>
+	/// Placeholder for an unknown {CLASSNAME}. Typically, seen if a method failed to find some data .
+	/// </summary>
+	Unknown = -1,
+	
+	/// <summary>
+	/// Placeholder for no {CLASSNAME}. Typically, seen if nothing is defined or failed to parse a string to a {CLASSNAME}.
+	/// </summary>
+	None = 0,
+	
+{ENUMS}
+
+	/// <summary>
+	/// The total number of vanilla {CLASSNAME} in the game.
+	/// </summary>
+	[Obsolete("Use {CLASSNAME}Extensions.Count(). {CLASSNAME}.MAX requires rebuilding your project everytime the API adds/removes enums.", true)]
+	MAX = {TOTAL_ENUMS}
+}
+
+/// <summary>
+/// Extension methods for the {CLASSNAME} enum to simplify getting and converting data to various types.
+/// </summary>
+public static class {CLASSNAME}Extensions
+{
+	/// <summary>
+	/// Returns how many enum values are in {CLASSNAME}.
+	/// </summary>
+	public static int Count()
+	{
+		return TypeToInternalName.Count;
+	}
+	
+	/// <summary>
+	/// Returns an array of all vanilla and modded {CLASSNAME}.
+	/// </summary>
+	public static {CLASSNAME}[] All()
+	{
+		{CLASSNAME}[] all = new {CLASSNAME}[TypeToInternalName.Count];
+		TypeToInternalName.Keys.CopyTo(all, 0);
+		return all;
+	}
+	
+	/// <summary>
+	/// Returns the name or internal ID of the model that will be used in the game.
+	/// Every {CLASSNAME} should have a unique name as to distinguish it from others.
+	/// If no name is found, it will return {CLASSNAME}.{FIRST_ENUM} in the enum and log an error.
+	/// </summary>
+	public static string ToName(this {CLASSNAME} type)
+	{
+		if (TypeToInternalName.TryGetValue(type, out var name))
+		{
+			return name;
+		}
+
+		APILogger.LogError($"Cannot find name of {CLASSNAME}: " + type);
+		return TypeToInternalName[{CLASSNAME}.{FIRST_ENUM}];
+	}
+	
+	/// <summary>
+	/// Returns a {CLASSNAME} associated with the given name.
+	/// Every {CLASSNAME} should have a unique name as to distinguish it from others.
+	/// If no {CLASSNAME} is found, it will return {CLASSNAME}.Unknown and log a warning.
+	/// </summary>
+	public static {CLASSNAME} To{CLASSNAME}(this string name)
+	{
+		foreach (KeyValuePair<{CLASSNAME},string> pair in TypeToInternalName)
+		{
+			if (pair.Value == name)
+			{
+				return pair.Key;
+			}
+		}
+
+		APILogger.LogWarning("Cannot find {CLASSNAME} with name: " + name + "\n" + Environment.StackTrace);
+		return {CLASSNAME}.Unknown;
+	}
+	
+	/// <summary>
+	/// Returns a {MODELNAME} associated with the given name.
+	/// {MODELNAME} contain all the data that will be used in the game.
+	/// Every {MODELNAME} should have a unique name as to distinguish it from others.
+	/// If no {MODELNAME} is found, it will return null and log an error.
+	/// </summary>
+	public static {FULLMODELNAME} To{MODELNAME}(this string name)
+	{
+		{FULLMODELNAME} model = {COLLECTION}.FirstOrDefault(a=>a.name == name);
+		if (model != null)
+		{
+			return model;
+		}
+	
+		APILogger.LogError("Cannot find {MODELNAME} for {CLASSNAME} with name: " + name);
+		return null;
+	}
+
+	/// <summary>
+	/// Returns a {MODELNAME} associated with the given {CLASSNAME}.
+	/// {MODELNAME} contain all the data that will be used in the game.
+	/// Every {MODELNAME} should have a unique name as to distinguish it from others.
+	/// If no {MODELNAME} is found, it will return null and log an error.
+	/// </summary>
+	public static {FULLMODELNAME} To{MODELNAME}(this {CLASSNAME} types)
+	{
+		return types.ToName().To{MODELNAME}();
+	}
+	
+	/// <summary>
+	/// Returns an array of {MODELNAME} associated with the given {CLASSNAME}.
+	/// {MODELNAME} contain all the data that will be used in the game.
+	/// Every {MODELNAME} should have a unique name as to distinguish it from others.
+	/// If a {MODELNAME} is not found, the element will be replaced with null and an error will be logged.
+	/// </summary>
+	public static {FULLMODELNAME}[] To{MODELNAME}Array(this IEnumerable<{CLASSNAME}> collection)
+	{
+		int count = collection.Count();
+		{FULLMODELNAME}[] array = new {FULLMODELNAME}[count];
+		int i = 0;
+		foreach ({CLASSNAME} element in collection)
+		{
+			array[i++] = element.To{MODELNAME}();
+		}
+
+		return array;
+	}
+	
+	/// <summary>
+	/// Returns an array of {MODELNAME} associated with the given {CLASSNAME}.
+	/// {MODELNAME} contain all the data that will be used in the game.
+	/// Every {MODELNAME} should have a unique name as to distinguish it from others.
+	/// If a {MODELNAME} is not found, the element will be replaced with null and an error will be logged.
+	/// </summary>
+	public static {FULLMODELNAME}[] To{MODELNAME}Array(this IEnumerable<string> collection)
+	{
+		int count = collection.Count();
+		{FULLMODELNAME}[] array = new {FULLMODELNAME}[count];
+		int i = 0;
+		foreach (string element in collection)
+		{
+			array[i++] = element.To{MODELNAME}();
+		}
+
+		return array;
+	}
+	
+	/// <summary>
+	/// Returns an array of {MODELNAME} associated with the given {CLASSNAME}.
+	/// {MODELNAME} contain all the data that will be used in the game.
+	/// Every {MODELNAME} should have a unique name as to distinguish it from others.
+	/// If a {MODELNAME} is not found, it will not be included in the array.
+	/// </summary>
+	public static {FULLMODELNAME}[] To{MODELNAME}ArrayNoNulls(this IEnumerable<string> collection)
+	{
+		using(ListPool<{FULLMODELNAME}>.Get(out List<{FULLMODELNAME}> list))
+		{
+			foreach (string element in collection)
+			{
+				{FULLMODELNAME} model = element.To{MODELNAME}();
+				if (model != null)
+				{
+					list.Add(model);
+				}
+			}
+			return list.ToArray();
+		}
+	}
+	
+	/// <summary>
+	/// Returns an array of {MODELNAME} associated with the given {CLASSNAME}.
+	/// {MODELNAME} contain all the data that will be used in the game.
+	/// Every {MODELNAME} should have a unique name as to distinguish it from others.
+	/// If a {MODELNAME} is not found, it will not be included in the array.
+	/// </summary>
+	public static {FULLMODELNAME}[] To{MODELNAME}ArrayNoNulls(this IEnumerable<{CLASSNAME}> collection)
+	{
+		using(ListPool<{FULLMODELNAME}>.Get(out List<{FULLMODELNAME}> list))
+		{
+			foreach ({CLASSNAME} element in collection)
+			{
+				{FULLMODELNAME} model = element.To{MODELNAME}();
+				if (model != null)
+				{
+					list.Add(model);
+				}
+			}
+			return list.ToArray();
+		}
+	}
+	
+	internal static readonly Dictionary<{CLASSNAME}, string> TypeToInternalName = new()
+	{
+{ENUM_TO_NAME}
+	};
+}

@@ -1,0 +1,15 @@
+# 0.2.0
+- Added support to add new eye colors via JSON
+- Added support to add new hair colors via JSON
+- Added support to add custom save data
+
+# 0.1.2
+- Fixed Exporting only exporting Articy and nothing else
+
+# 0.1.1
+- Fixed BepInEx not loading the mod correctly due to incorrect `doorstop_config.ini`
+- Changed `CookingAspect.m_IsSeasoning` to CookingAspect.IsSeasoning
+- Nexus Mods now includes Source Code files in the download package
+
+# 0.1.0
+Initial Release
