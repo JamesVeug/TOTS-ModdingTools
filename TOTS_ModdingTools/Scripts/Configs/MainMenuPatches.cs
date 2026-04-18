@@ -1,19 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using TOTS_ModdingTools;
 using TOTS_ModdingTools.Helpers;
 using BepInEx.Bootstrap;
 using BepInEx.Configuration;
 using HarmonyLib;
+using ModdingTools;
 using TMPro;
 using TotS;
 using TotS.Lorebook;
 using TotS.UI;
 using TotS.UI.Rebinding;
 using UnityEngine;
-using UnityEngine.SocialPlatforms;
 using UnityEngine.UI;
 using PluginInfo = BepInEx.PluginInfo;
 
@@ -326,9 +325,10 @@ public class ModsSettingsSection : MonoBehaviour, ISettingsSection
 
         foreach (KeyValuePair<string, PluginInfo> pair in Chainloader.PluginInfos)
         {
-            if (pair.Key.Contains("bepinex", StringComparison.OrdinalIgnoreCase))
+            string key = pair.Key;
+            if (key.Contains("bepinex", StringComparison.OrdinalIgnoreCase))
             {
-                APILogger.LogInfo($"Ignoring plugin: {pair.Key}");
+                APILogger.LogInfo($"Ignoring plugin: {key}");
                 continue;
             }
             

@@ -10,15 +10,13 @@
 // using TMPro;
 // using UnityEngine;
 // using UnityEngine.InputSystem;
-
-namespace TOTS_ModdingTools;
-
-
 using HarmonyLib;
 using TotS.Input;
 
-public static partial class Hotkeys
+namespace TOTS_ModdingTools
 {
+    public static partial class Hotkeys
+    {
 //     [HarmonyPatch(typeof(KeyBindingsPanel), nameof(KeyBindingsPanel.OnEnable))]
 //     [HarmonyPrefix]
 //     public static void KeyBindingsPanel_Start_Postfix(KeyBindingsPanel __instance)
@@ -99,12 +97,12 @@ public static partial class Hotkeys
 //         }
 //     }
 //
-     [HarmonyPatch(typeof(InputManager), nameof(InputManager.Awake))]
-     [HarmonyPostfix]
-     private static void HookMainControllerSetup(InputManager __instance)
-     {
-         MasterInputAsset = __instance.Actions.asset;
-     }
+        [HarmonyPatch(typeof(InputManager), nameof(InputManager.Awake))]
+        [HarmonyPostfix]
+        private static void HookMainControllerSetup(InputManager __instance)
+        {
+            MasterInputAsset = __instance.Actions.asset;
+        }
 //
 //     [HarmonyPatch(typeof(KeyBindingsPanel), nameof(KeyBindingsPanel.EnableInput))]
 //     [HarmonyPostfix]
@@ -139,4 +137,6 @@ public static partial class Hotkeys
 //
 //         return true;
 //     }
+    }
+
 }

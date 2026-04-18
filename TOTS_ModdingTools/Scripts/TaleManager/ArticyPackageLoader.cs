@@ -25,9 +25,9 @@ public static class ArticyPackageLoader
         string id = passage.ID; // Dialogue Orlo_something_something
 
         string typeName = "Dialogue"; // Default type
-        if(id.IndexOf(' ', StringComparison.OrdinalIgnoreCase) >= 0)
+        if(id.IndexOf(" ", StringComparison.OrdinalIgnoreCase) >= 0)
         {
-            typeName = id.Substring(0, id.IndexOf(' ', StringComparison.OrdinalIgnoreCase));
+            typeName = id.Substring(0, id.IndexOf(" ", StringComparison.OrdinalIgnoreCase));
         }
 
         if(articyTypeMapping.TryGetValue(typeName, out Type type))

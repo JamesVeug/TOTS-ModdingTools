@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ModdingTools;
 using UnityEngine;
 
 public class TweeFile
@@ -59,7 +60,7 @@ public class TweeFile
 
                     foreach (string line in lines)
                     {
-                        if (line.AsSpan().Trim().StartsWith("\"start\"", StringComparison.OrdinalIgnoreCase))
+                        if (line.Trim().StartsWith("\"start\"", StringComparison.OrdinalIgnoreCase))
                         {
                             string[] parts = line.Split(new char[] { ':' }, StringSplitOptions.RemoveEmptyEntries);
                             if (parts.Length == 2)

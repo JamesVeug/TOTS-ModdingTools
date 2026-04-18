@@ -84,7 +84,7 @@ public static class ShopStockManager
         //     }
         // }
 
-        Plugin.PostTick.AddListener(()=>GetItemType(model, itemName));
+        ModdingToolsPlugin.PostTick.AddListener(()=>GetItemType(model, itemName));
         return model;
     }
 

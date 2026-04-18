@@ -12,7 +12,7 @@ internal static class Configs
         set
         {
             m_LogLevel.Value = value;
-            Plugin.Instance.Config.Save();
+            ModdingToolsPlugin.Instance.Config.Save();
         }
     }
 
@@ -25,7 +25,7 @@ internal static class Configs
         set
         {
             m_ExportGameToJSON.Value = value;
-            Plugin.Instance.Config.Save();
+            ModdingToolsPlugin.Instance.Config.Save();
         }
     }
 
@@ -47,7 +47,7 @@ internal static class Configs
             "Debug - Show all logs including debug logs");
             
         m_ExportGameToJSON = Bind("Exporting", "Export Game to JSON", false, 
-            $"When set to true JSONLoader will export as much data as it can to '{Plugin.ExportPath}'.");
+            $"When set to true JSONLoader will export as much data as it can to '{ModdingToolsPlugin.ExportPath}'.");
     }
 
     private static ConfigEntry<T> Bind<T>(string section, string key, T defaultValue, string description)

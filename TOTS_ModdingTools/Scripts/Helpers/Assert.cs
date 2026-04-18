@@ -1,23 +1,24 @@
 ﻿using System;
 
-namespace TOTS_ModdingTools.Helpers;
-
-[Obsolete("Copy APILogger into your own mod. Provides MANY more helper methods like this.\nhttps://github.com/JamesVeug/AgainstTheStormAPI/blob/master/TOTS_ModdingTools/APILogger.cs")]
-public static class Assert
+namespace TOTS_ModdingTools.Helpers
 {
-    public static void IsTrue(bool condition, string message)
+    [Obsolete("Copy APILogger into your own mod. Provides MANY more helper methods like this.\nhttps://github.com/JamesVeug/AgainstTheStormAPI/blob/master/TOTS_ModdingTools/APILogger.cs")]
+    public static class Assert
     {
-        if (!condition)
+        public static void IsTrue(bool condition, string message)
         {
-            APILogger.LogError(message);
+            if (!condition)
+            {
+                APILogger.LogError(message);
+            }
         }
-    }
-    
-    public static void IsEqual<T>(T expected, T actual, string message)
-    {
-        if (!expected.Equals(actual))
+
+        public static void IsEqual<T>(T expected, T actual, string message)
         {
-            APILogger.LogError($"{expected} != {actual}, {message}");
+            if (!expected.Equals(actual))
+            {
+                APILogger.LogError($"{expected} != {actual}, {message}");
+            }
         }
     }
 }

@@ -22,7 +22,7 @@ public static class JSONSchemaGenerator
             Dictionary<string, object> schema = GenerateSchemaHighLevelType(type);
             
             string json = JsonConvert.SerializeObject(schema, Formatting.Indented);
-            string path = Path.Combine(Plugin.ExportPath, "Schemas", type.Name + ".json");
+            string path = Path.Combine(ModdingToolsPlugin.ExportPath, "Schemas", type.Name + ".json");
             if (!Directory.Exists(Path.GetDirectoryName(path)))
             {
                 Directory.CreateDirectory(Path.GetDirectoryName(path));

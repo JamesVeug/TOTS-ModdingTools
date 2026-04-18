@@ -13,29 +13,29 @@ public static class Placeholders
     private static Texture2D BlackTextureCache = TextureHelper.GetTexture(Color.black, 1,1);
     
     // Create new object but not new key in case someone tries changing it
-    public static readonly string DisplayNameKey = LocalizationManager.NewString(Plugin.PLUGIN_GUID, "placeHolders", "displayName", "Missing DisplayName");
+    public static readonly string DisplayNameKey = LocalizationManager.NewString(ModdingToolsPlugin.PLUGIN_GUID, "placeHolders", "displayName", "Missing DisplayName");
     
     // Create new object but not new key in case someone tries changing it
-    public static readonly string PluralDisplayNameKey = LocalizationManager.NewString(Plugin.PLUGIN_GUID, "placeHolders", "pluralDisplayName", "Missing PluralDisplayName");
+    public static readonly string PluralDisplayNameKey = LocalizationManager.NewString(ModdingToolsPlugin.PLUGIN_GUID, "placeHolders", "pluralDisplayName", "Missing PluralDisplayName");
     
     // Create new object but not new key in case someone tries changing it
-    public static readonly string DescriptionKey = LocalizationManager.NewString(Plugin.PLUGIN_GUID, "placeHolders", "description", "Missing Description");
+    public static readonly string DescriptionKey = LocalizationManager.NewString(ModdingToolsPlugin.PLUGIN_GUID, "placeHolders", "description", "Missing Description");
     
     // Create new object but not new key in case someone tries changing it
-    public static readonly string GradeKey = LocalizationManager.NewString(Plugin.PLUGIN_GUID, "placeHolders", "grade", "Missing Grade");
+    public static readonly string GradeKey = LocalizationManager.NewString(ModdingToolsPlugin.PLUGIN_GUID, "placeHolders", "grade", "Missing Grade");
     
     // Create new object but not new key in case someone tries changing it
-    public static readonly string ShortDescriptionKey = LocalizationManager.NewString(Plugin.PLUGIN_GUID, "placeHolders", "shortDescription", "Missing Short Description");
+    public static readonly string ShortDescriptionKey = LocalizationManager.NewString(ModdingToolsPlugin.PLUGIN_GUID, "placeHolders", "shortDescription", "Missing Short Description");
     
     // Create new object but not new key in case someone tries changing it
-    public static readonly string LabelKey = LocalizationManager.NewString(Plugin.PLUGIN_GUID, "placeHolders", "label", "Missing Label");
+    public static readonly string LabelKey = LocalizationManager.NewString(ModdingToolsPlugin.PLUGIN_GUID, "placeHolders", "label", "Missing Label");
     
     // Create new object but not new key in case someone tries changing it
     public static readonly string PassiveEffectDescKey = "Common_None_NoDash";
     
     // Create new object but not new key in case someone tries changing it
-    public static readonly string TownNameKey = LocalizationManager.NewString(Plugin.PLUGIN_GUID, "placeHolders", "townName", "Missing Town Name");
+    public static readonly string TownNameKey = LocalizationManager.NewString(ModdingToolsPlugin.PLUGIN_GUID, "placeHolders", "townName", "Missing Town Name");
     
     // Create new object but not new key in case someone tries changing it
-    public static readonly string TownDescriptionKey = LocalizationManager.NewString(Plugin.PLUGIN_GUID, "placeHolders", "townDescription", "Missing Town Description");
+    public static readonly string TownDescriptionKey = LocalizationManager.NewString(ModdingToolsPlugin.PLUGIN_GUID, "placeHolders", "townDescription", "Missing Town Description");
 }

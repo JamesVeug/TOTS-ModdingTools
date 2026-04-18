@@ -131,7 +131,7 @@ public class ShopStockLoader
                 index++;
             }
 
-            string file = Path.Combine(Plugin.ExportPath, "ShopStock", ownerID + "_" + itemType + fileExtension);
+            string file = Path.Combine(ModdingToolsPlugin.ExportPath, "ShopStock", ownerID + "_" + itemType + fileExtension);
             if (Directory.Exists(Path.GetDirectoryName(file)) == false)
             {
                 Directory.CreateDirectory(Path.GetDirectoryName(file));
@@ -143,7 +143,7 @@ public class ShopStockLoader
     }
 }
 
-[GenerateSchema("ShopStock", "Things that NPCs sell", ItemTypesLoader.fileExtension)]
+[GenerateSchema("ShopStock", "Things that NPCs sell", ItemTypeLoader.fileExtension)]
 public class ShopStockData : IInitializable
 {
     public string OwnerID;

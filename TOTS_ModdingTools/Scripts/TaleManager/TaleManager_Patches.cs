@@ -18,7 +18,7 @@ public static partial class TaleManager
     [HarmonyPrefix]
     public static void LogQuestManager(QuestManager owner, ArticyObject articyObject)
     {
-        APILogger.LogInfo(
+        APILogger.LogVerbose(
             "QuestManager.Quest Constructor: " + articyObject.technicalName + " (" + articyObject.Id + ")");
     }
 
@@ -32,45 +32,33 @@ public static partial class TaleManager
             text = $"[{aObject.GetType().FullName}] {aObject.ToString()}";
         }
 
-        APILogger.LogInfo("DialoguePlayer.OnFlowPlayerPaused: " + text);
+        APILogger.LogVerbose("DialoguePlayer.OnFlowPlayerPaused: " + text);
     }
 
     [HarmonyPatch(typeof(DialoguePlayer), nameof(DialoguePlayer.PausedOnDialogueFragment))]
     [HarmonyPrefix]
     public static bool DialoguePlayer_PausedOnDialogueFragment(DialoguePlayer __instance, IFlowObject aObject)
     {
-        APILogger.LogInfo("A");
         IObjectWithText text = aObject as IObjectWithText;
-        APILogger.LogInfo("B");
         IObjectWithLocalizableText key = aObject as IObjectWithLocalizableText;
-        APILogger.LogInfo("C");
         ArticyObject speaker = (ArticyObject)null;
-        APILogger.LogInfo("D");
         if (aObject is IObjectWithSpeaker objectWithSpeaker)
         {
             speaker = objectWithSpeaker.Speaker;
-            APILogger.LogInfo("E");
             if ((long)speaker.Id == (long)__instance.m_Manager.PlayerArticyRef.id)
             {
-                APILogger.LogInfo("F");
                 Singleton<PlayerManager>.Instance.ActivePlayer.PlayerHub.PlayerLookable.SetDialoguePriority();
-                APILogger.LogInfo("");
             }
             else
             {
-                APILogger.LogInfo("G");
                 NPCHub npc = Singleton<NPCManager>.Instance.GetNPC(speaker.Id);
-                APILogger.LogInfo("H");
                 if ((UnityEngine.Object)npc != (UnityEngine.Object)null)
                 {
-                    APILogger.LogInfo("I");
                     npc.NPCLookable.SetDialoguePriority();
-                    APILogger.LogInfo("J");
                 }
             }
         }
 
-        APILogger.LogInfo("K");
         DialogueBlocking blocking = __instance.m_Handle.GetBlocking();
         CameraShot defaultCameraShot = __instance.m_Manager.DefaultCameraShot;
         IObjectWithFeatureCameraDirection withFeatureInParent1 =
@@ -86,12 +74,10 @@ public static partial class TaleManager
         ArticyObject emote2 = (ArticyObject)null;
         bool exitEmoteLoop2 = false;
         ArticyObject pose = (ArticyObject)null;
-        APILogger.LogInfo("L");
         IObjectWithFeatureDialogueEmote withFeatureInParent2 =
             __instance.GetObjectWithFeatureInParent<IObjectWithFeatureDialogueEmote>(aObject as ArticyObject);
         if (withFeatureInParent2 != null)
         {
-            APILogger.LogInfo("M");
             DialogueEmoteFeature featureDialogueEmote = withFeatureInParent2.GetFeatureDialogueEmote();
             emote1 = featureDialogueEmote.StartingEmote;
             exitEmoteLoop1 = featureDialogueEmote.ExitStartEmoteLoop;
@@ -100,7 +86,6 @@ public static partial class TaleManager
             pose = featureDialogueEmote.EmotePose;
         }
 
-        APILogger.LogInfo("N");
         List<DialoguePlayer.DialogueNode.ReactionEmoteData> reactionDataSet1 =
             new List<DialoguePlayer.DialogueNode.ReactionEmoteData>();
         List<DialoguePlayer.DialogueNode.ReactionEmoteData> reactionDataSet2 =
@@ -109,7 +94,6 @@ public static partial class TaleManager
             __instance.GetObjectWithFeatureInParent<IObjectWithFeatureDialogueReactions>(aObject as ArticyObject);
         if (withFeatureInParent3 != null)
         {
-            APILogger.LogInfo("O");
             DialogueReactionsFeature dialogueReactions = withFeatureInParent3.GetFeatureDialogueReactions();
             if (dialogueReactions.DialogueStartReactionPairs != null &&
                 dialogueReactions.DialogueStartReactionPairs.Count > 0)
@@ -138,7 +122,6 @@ public static partial class TaleManager
             }
         }
 
-        APILogger.LogInfo("P");
         DialoguePlayer.DialogueNode.EmoteData startEmoteData = new DialoguePlayer.DialogueNode.EmoteData();
         DialoguePlayer.DialogueNode.EmoteData endEmoteData = new DialoguePlayer.DialogueNode.EmoteData();
         IObjectWithFeatureDialogueEmoteSpeakerAiming withFeatureInParent4 =
@@ -146,7 +129,6 @@ public static partial class TaleManager
                 aObject as ArticyObject);
         if (withFeatureInParent4 != null)
         {
-            APILogger.LogInfo("Q");
             DialogueEmoteSpeakerAimingFeature emoteSpeakerAiming =
                 withFeatureInParent4.GetFeatureDialogueEmoteSpeakerAiming();
             startEmoteData.SetData(emote1, exitEmoteLoop1, emoteSpeakerAiming.StartingEyeAndHeadAimer,
@@ -170,15 +152,14 @@ public static partial class TaleManager
         __instance.m_CurrentNode = (DialoguePlayer.Node)new DialoguePlayer.DialogueNode(__instance, speaker, text, key,
             startEmoteData, endEmoteData, pose, audioClip, cameraShot, blocking, autoSkip);
 
-        APILogger.LogInfo("Z");
         return false;
     }
 
     [HarmonyPatch(typeof(DialoguePlayer.DialogueNode), nameof(DialoguePlayer.DialogueNode.RebuildResponses))]
     [HarmonyPrefix]
-    public static void DialoguePlayer_RebuildResponses(DialoguePlayer.DialogueNode __instance, IList<Branch> branches)
+    public static bool DialoguePlayer_RebuildResponses(DialoguePlayer.DialogueNode __instance, IList<Branch> branches)
     {
-        APILogger.LogInfo("DialoguePlayer.RebuildResponses with " + branches.Count + " branches:");
+        APILogger.LogVerbose("DialoguePlayer.RebuildResponses with " + branches.Count + " branches:");
         foreach (Branch branch in branches)
         {
             string text = "null";
@@ -186,16 +167,18 @@ public static partial class TaleManager
             {
                 text = $"[{branch.Target.GetType().FullName}] {branch.Target.ToString()}";
             }
-
-            APILogger.LogInfo(" - Branch: " + text);
+        
+            APILogger.LogVerbose(" - Branch: " + text);
         }
+        
+        return true;
     }
 
     [HarmonyPatch(typeof(QuestManager.Quest), nameof(QuestManager.Quest.CompleteInternal))]
     [HarmonyPrefix]
-    public static void Quest_CompleteInternal(QuestManager.Quest __instance, List<IOutputPin> outputPins)
+    public static bool Quest_CompleteInternal(QuestManager.Quest __instance, List<IOutputPin> outputPins)
     {
-        APILogger.LogInfo("Quest.CompleteInternal: " + __instance.Name + " (" + __instance.ID + ")");
+        APILogger.LogVerbose("Quest.CompleteInternal: " + __instance.Name + " (" + __instance.ID + ")");
         foreach (IOutputPin outputPin in outputPins)
         {
             APILogger.LogInfo(" - OutputPin " + outputPin.Id + " with " + outputPin.GetOutgoingConnections().Count +
@@ -207,22 +190,23 @@ public static partial class TaleManager
                 {
                     if (connection.mTarget != null)
                     {
-                        APILogger.LogInfo("     - To " + connection.mTarget.GetValue().GetDisplayText());
+                        APILogger.LogVerbose("     - To " + connection.mTarget.GetValue().GetDisplayText());
                     }
                     else
                     {
-                        APILogger.LogInfo("     - To null");
+                        APILogger.LogVerbose("     - To null");
                     }
                 }
             }
         }
+        return true;
     }
 
     [HarmonyPatch(typeof(Dialogue), nameof(Dialogue.GetInputPins))]
     [HarmonyPrefix]
     public static bool Dialogue_GetInputPins(Dialogue __instance)
     {
-        APILogger.LogInfo("Dialogue.GetInputPins: " + __instance.GetDisplayText());
+        APILogger.LogVerbose("Dialogue.GetInputPins: " + __instance.GetDisplayText());
         foreach (InputPin pin in __instance.mInputPins.value)
         {
             if (pin != null)
@@ -247,7 +231,7 @@ public static partial class TaleManager
             }
             else
             {
-                APILogger.LogInfo(" - InputPin is null");
+                APILogger.LogVerbose(" - InputPin is null");
             }
         }
 
@@ -256,7 +240,7 @@ public static partial class TaleManager
 
     [HarmonyPatch(typeof(QuestManager), nameof(QuestManager.Pump))]
     [HarmonyPrefix]
-    public static void QuestManager_Pump(QuestManager __instance)
+    public static bool QuestManager_Pump(QuestManager __instance)
     {
         string queue = "Pumping queue:";
         Queue<QuestManager.PumpStep> steps = __instance.m_PumpQueue;
@@ -326,7 +310,9 @@ public static partial class TaleManager
                 }
             }
 
-            APILogger.LogInfo(queue);
+            APILogger.LogVerbose(queue);
         }
+
+        return true;
     }
 }

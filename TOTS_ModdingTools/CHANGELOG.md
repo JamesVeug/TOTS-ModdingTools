@@ -1,3 +1,8 @@
+# 0.2.0
+- Added support to add new eye colors via JSON
+- Added support to add new hair colors via JSON
+- Added support to add custom save data
+
 # 0.1.2
 - Fixed Exporting only exporting Articy and nothing else
 

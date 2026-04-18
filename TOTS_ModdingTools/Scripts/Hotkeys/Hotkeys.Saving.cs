@@ -2,117 +2,118 @@ using System;
 using System.IO;
 using UnityEngine;
 
-namespace TOTS_ModdingTools;
-
-public static partial class Hotkeys
+namespace TOTS_ModdingTools
 {
-    private static string CustomBindingsPath => Path.Combine(Application.persistentDataPath, "API");
-    
-    // [HarmonyPatch(typeof(ClientPrefsService), nameof(ClientPrefsService.Reset))]
-    // [HarmonyPrefix]
-    // private static void ClientPrefsService_Reset()
-    // {
-    //     foreach (InputActionMap map in modNameToActionMaps.Values)
-    //     {
-    //         LogInfo($"Resetting input config for {map.name}");
-    //         map.RemoveAllBindingOverrides();
-    //     }
-    // }
-    //
-    // [HarmonyPatch(typeof(ClientPrefsService), nameof(ClientPrefsService.SaveInputConfig))]
-    // [HarmonyPostfix]
-    // private static void ClientPrefsService_SaveInputConfig()
-    // {
-    //     if (!Directory.Exists(CustomBindingsPath))
-    //     {
-    //         Directory.CreateDirectory(CustomBindingsPath);
-    //     }
-    //     
-    //     foreach (KeyValuePair<string, InputActionMap> pair in modNameToActionMaps)
-    //     {
-    //         string value = pair.Value.SaveBindingOverridesAsJson();
-    //         LogInfo($"Saving input config for {pair.Key} with value {value}");
-    //         SavedInputMap inputMap = new SavedInputMap
-    //         {
-    //             modName = pair.Key,
-    //             actionMap = pair.Value.ToJson(),
-    //             bindings = value
-    //         };
-    //
-    //         string path = Path.Combine(CustomBindingsPath, $"{pair.Key}.custombindings");
-    //         LogInfo($"Saving keybinds for {pair.Key} to {path}");
-    //         JsonIO.SaveToFile(inputMap, path);
-    //     }
-    // }
-    //
-    // [HarmonyPatch(typeof(ClientPrefsService), nameof(ClientPrefsService.LoadInputConfig))]
-    // [HarmonyPostfix]
-    // private static void ClientPrefsService_LoadInputConfig()
-    // {
-    //     if (Serviceable.CommandLineArgsService.HasKey("-resetkeybinds"))
-    //     {
-    //         LogError("Clearing keybinds!");
-    //         return;
-    //     }
-    //     
-    //     if (!Directory.Exists(CustomBindingsPath))
-    //     {
-    //         LogInfo("No custombindings folder found.");
-    //         return;
-    //     }
-    //     
-    //     string[] files = Directory.GetFiles(CustomBindingsPath, "*.custombindings");
-    //     if(files.Length == 0)
-    //     {
-    //         LogInfo("No saved custombindings files found.");
-    //         return;
-    //     }
-    //     
-    //     MasterInputAsset.Disable();
-    //     foreach (string path in files)
-    //     {
-    //         if (!File.Exists(path))
-    //         {
-    //             LogError("No saved inputs found.");
-    //             continue;
-    //         }
-    //
-    //         SavedInputMap modInput = JsonIO.GetFromFile<SavedInputMap>(path);
-    //         if (modInput == null)
-    //         {
-    //             LogError("Couldn't load custom input json at path " + path);
-    //             continue;
-    //         }
-    //
-    //         string actionMapJSON = modInput.actionMap;
-    //         InputActionMap[] actionMap = InputActionMap.FromJson(actionMapJSON);
-    //         if (actionMap.Length == 0)
-    //         {
-    //             LogError($"Failed to load {modInput.modName} action map from json: " + actionMapJSON);
-    //             continue;
-    //         }
-    //         else if (actionMap.Length > 1)
-    //         {
-    //             LogWarning(
-    //                 $"Loaded {actionMap.Length} action maps for {modInput.modName}, using the first one.");
-    //         }
-    //
-    //         InputActionMap map = actionMap[0];
-    //         if (MasterInputAsset.FindActionMap(map.name) == null)
-    //         {
-    //             MasterInputAsset.AddActionMap(map);
-    //             map.LoadBindingOverridesFromJson(modInput.bindings);
-    //             modNameToActionMaps[modInput.modName] = map;
-    //         }
-    //     }
-    //     MasterInputAsset.Enable();
-    // }
-
-    [Serializable]
-    private class SavedInputMap
+    public static partial class Hotkeys
     {
-        public string modName;
-        public string actionMap;
-        public string bindings;
+        private static string CustomBindingsPath => Path.Combine(Application.persistentDataPath, "API");
+
+        // [HarmonyPatch(typeof(ClientPrefsService), nameof(ClientPrefsService.Reset))]
+        // [HarmonyPrefix]
+        // private static void ClientPrefsService_Reset()
+        // {
+        //     foreach (InputActionMap map in modNameToActionMaps.Values)
+        //     {
+        //         LogInfo($"Resetting input config for {map.name}");
+        //         map.RemoveAllBindingOverrides();
+        //     }
+        // }
+        //
+        // [HarmonyPatch(typeof(ClientPrefsService), nameof(ClientPrefsService.SaveInputConfig))]
+        // [HarmonyPostfix]
+        // private static void ClientPrefsService_SaveInputConfig()
+        // {
+        //     if (!Directory.Exists(CustomBindingsPath))
+        //     {
+        //         Directory.CreateDirectory(CustomBindingsPath);
+        //     }
+        //     
+        //     foreach (KeyValuePair<string, InputActionMap> pair in modNameToActionMaps)
+        //     {
+        //         string value = pair.Value.SaveBindingOverridesAsJson();
+        //         LogInfo($"Saving input config for {pair.Key} with value {value}");
+        //         SavedInputMap inputMap = new SavedInputMap
+        //         {
+        //             modName = pair.Key,
+        //             actionMap = pair.Value.ToJson(),
+        //             bindings = value
+        //         };
+        //
+        //         string path = Path.Combine(CustomBindingsPath, $"{pair.Key}.custombindings");
+        //         LogInfo($"Saving keybinds for {pair.Key} to {path}");
+        //         JsonIO.SaveToFile(inputMap, path);
+        //     }
+        // }
+        //
+        // [HarmonyPatch(typeof(ClientPrefsService), nameof(ClientPrefsService.LoadInputConfig))]
+        // [HarmonyPostfix]
+        // private static void ClientPrefsService_LoadInputConfig()
+        // {
+        //     if (Serviceable.CommandLineArgsService.HasKey("-resetkeybinds"))
+        //     {
+        //         LogError("Clearing keybinds!");
+        //         return;
+        //     }
+        //     
+        //     if (!Directory.Exists(CustomBindingsPath))
+        //     {
+        //         LogInfo("No custombindings folder found.");
+        //         return;
+        //     }
+        //     
+        //     string[] files = Directory.GetFiles(CustomBindingsPath, "*.custombindings");
+        //     if(files.Length == 0)
+        //     {
+        //         LogInfo("No saved custombindings files found.");
+        //         return;
+        //     }
+        //     
+        //     MasterInputAsset.Disable();
+        //     foreach (string path in files)
+        //     {
+        //         if (!File.Exists(path))
+        //         {
+        //             LogError("No saved inputs found.");
+        //             continue;
+        //         }
+        //
+        //         SavedInputMap modInput = JsonIO.GetFromFile<SavedInputMap>(path);
+        //         if (modInput == null)
+        //         {
+        //             LogError("Couldn't load custom input json at path " + path);
+        //             continue;
+        //         }
+        //
+        //         string actionMapJSON = modInput.actionMap;
+        //         InputActionMap[] actionMap = InputActionMap.FromJson(actionMapJSON);
+        //         if (actionMap.Length == 0)
+        //         {
+        //             LogError($"Failed to load {modInput.modName} action map from json: " + actionMapJSON);
+        //             continue;
+        //         }
+        //         else if (actionMap.Length > 1)
+        //         {
+        //             LogWarning(
+        //                 $"Loaded {actionMap.Length} action maps for {modInput.modName}, using the first one.");
+        //         }
+        //
+        //         InputActionMap map = actionMap[0];
+        //         if (MasterInputAsset.FindActionMap(map.name) == null)
+        //         {
+        //             MasterInputAsset.AddActionMap(map);
+        //             map.LoadBindingOverridesFromJson(modInput.bindings);
+        //             modNameToActionMaps[modInput.modName] = map;
+        //         }
+        //     }
+        //     MasterInputAsset.Enable();
+        // }
+
+        [Serializable]
+        private class SavedInputMap
+        {
+            public string modName;
+            public string actionMap;
+            public string bindings;
+        }
     }
 }

@@ -34,7 +34,7 @@ public static partial class ImportExportUtils
         }
         else
         {
-            DebugPath = path.Substring(Plugin.BepInExDirectory.Length);
+            DebugPath = path.Substring(ModdingToolsPlugin.BepInExDirectory.Length);
         }
 
         LoggingSuffix = "";
@@ -513,7 +513,7 @@ public static partial class ImportExportUtils
                 Texture texture = (Texture)(object)from;
                 if (texture != null)
                 {
-                    string path = Path.Combine(Plugin.ExportPath, category, "Assets", $"{ID}_{suffix}.png");
+                    string path = Path.Combine(ModdingToolsPlugin.ExportPath, category, "Assets", $"{ID}_{suffix}.png");
                     to = (ToType)(object)ExportTexture(texture, path);
                 }
 
@@ -538,7 +538,7 @@ public static partial class ImportExportUtils
                 Sprite sprite = (Sprite)(object)from;
                 if (sprite != null)
                 {
-                    string path = Path.Combine(Plugin.ExportPath, category, "Assets", $"{ID}_{suffix}.png");
+                    string path = Path.Combine(ModdingToolsPlugin.ExportPath, category, "Assets", $"{ID}_{suffix}.png");
                     to = (ToType)(object)ExportSprite(sprite, path);
                 }
 
@@ -570,7 +570,7 @@ public static partial class ImportExportUtils
                 else
                 {
                     int[] split = value.Split(',').Select((a) => int.Parse(a.Trim())).ToArray();
-                    if (split.Length > 0)
+                    if (split.Length > 0) 
                     {
                         color.r = split[0] / 255f;
                     }
@@ -632,7 +632,7 @@ public static partial class ImportExportUtils
                 AudioClip clip = (AudioClip)(object)from;
                 if (clip != null)
                 {
-                    string path = Path.Combine(Plugin.ExportPath, category, "Audio", $"{ID}_{suffix}.wav");
+                    string path = Path.Combine(ModdingToolsPlugin.ExportPath, category, "Audio", $"{ID}_{suffix}.wav");
                     to = (ToType)(object)AudioHelpers.ExportAudioClip(clip, path);
                 }
                 to = (ToType)(object)clip.name;
@@ -947,7 +947,7 @@ public static partial class ImportExportUtils
         {
             i++;
 
-            string path = Path.Combine(Plugin.ExportPath, type, "Assets", $"{fileName}_{i}.png");
+            string path = Path.Combine(ModdingToolsPlugin.ExportPath, type, "Assets", $"{fileName}_{i}.png");
             paths.Add(ExportTexture(texture2D, path));
         }
 
@@ -1054,7 +1054,7 @@ public static partial class ImportExportUtils
         APILogger.LogError($"[{DebugPath}][{ID}][{LoggingSuffix}] {e.Message}\n{e.StackTrace}");
     }
 
-    private static readonly Type[] AllSerializers = Assembly.GetAssembly(typeof(Plugin))
+    private static readonly Type[] AllSerializers = Assembly.GetAssembly(typeof(ModdingToolsPlugin))
         .GetTypes()
         .Where(a =>
         {

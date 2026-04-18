@@ -3,26 +3,28 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace TOTS_ModdingTools;
-
-public static partial class Hotkeys
+namespace TOTS_ModdingTools
 {
-    [Obsolete("Use Hotkeys.New() instead")]
-    public static void RegisterKey(string modName, string keyName, string displayName, List<KeyCode> codes, Action<InputAction.CallbackContext> callback = null)
+    public static partial class Hotkeys
     {
-        New(modName, keyName, displayName, codes, callback);
-    }
-    
-    [Obsolete("Use Hotkeys.New() instead")]
-    public static void RegisterKey(string modName, string keyName, string displayName, List<KeyCode> codes,
-        Action onPress = null, Action onRelease = null)
-    {
-        New(modName, keyName, displayName, codes, onPress, onRelease);
-    }
-    
-    [Obsolete("Use Hotkeys.New() instead")]
-    public static void RegisterKey(string modName, Hotkey hotkey)
-    {
-        Add(modName, hotkey);
+        [Obsolete("Use Hotkeys.New() instead")]
+        public static void RegisterKey(string modName, string keyName, string displayName, List<KeyCode> codes,
+            Action<InputAction.CallbackContext> callback = null)
+        {
+            New(modName, keyName, displayName, codes, callback);
+        }
+
+        [Obsolete("Use Hotkeys.New() instead")]
+        public static void RegisterKey(string modName, string keyName, string displayName, List<KeyCode> codes,
+            Action onPress = null, Action onRelease = null)
+        {
+            New(modName, keyName, displayName, codes, onPress, onRelease);
+        }
+
+        [Obsolete("Use Hotkeys.New() instead")]
+        public static void RegisterKey(string modName, Hotkey hotkey)
+        {
+            Add(modName, hotkey);
+        }
     }
 }

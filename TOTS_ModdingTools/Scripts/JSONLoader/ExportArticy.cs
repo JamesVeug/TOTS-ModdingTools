@@ -27,7 +27,7 @@ public class ExportArticy
                 };
                 string json = JsonUtility.ToJson(mObject, true);
             
-                string file = Path.Combine(Plugin.ExportPath, "Articy", package.name, mObject.TechnicalName + ".json");
+                string file = Path.Combine(ModdingToolsPlugin.ExportPath, "Articy", package.name, mObject.TechnicalName + ".json");
                 if (Directory.Exists(Path.GetDirectoryName(file)) == false)
                 {
                     Directory.CreateDirectory(Path.GetDirectoryName(file));

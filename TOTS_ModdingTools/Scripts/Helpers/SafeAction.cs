@@ -3,165 +3,166 @@ using System.Collections.Generic;
 using TOTS_ModdingTools;
 using Cysharp.Threading.Tasks;
 
-namespace TOTS_ModdingTools.Helpers;
-
-public class SafeAction
+namespace TOTS_ModdingTools.Helpers
 {
-    private List<Action> _actions = new List<Action>();
-    
-    public void AddListener(Action action)
+    public class SafeAction
     {
-        _actions.Add(action);
-    }
-    
-    public void RemoveListener(Action action)
-    {
-        _actions.Remove(action);
-    }
-    
-    public void Invoke()
-    {
-        foreach (Action action in _actions)
-        {
-            try
-            {
-                action.Invoke();
-            }
-            catch (Exception e)
-            {
-                APILogger.LogError(e);
-            }
-        }
-    }
+        private List<Action> _actions = new List<Action>();
 
-    public void ClearListeners()
-    {
-        _actions.Clear();
-    }
-}
-
-public class SafeAction<T>
-{
-    private List<Action<T>> _actions = new List<Action<T>>();
-    
-    public void AddListener(Action<T> action)
-    {
-        _actions.Add(action);
-    }
-    
-    public void RemoveListener(Action<T> action)
-    {
-        _actions.Remove(action);
-    }
-    
-    public void Invoke(T t)
-    {
-        foreach (Action<T> action in _actions)
+        public void AddListener(Action action)
         {
-            try
-            {
-                action.Invoke(t);
-            }
-            catch (Exception e)
-            {
-                APILogger.LogError(e);
-            }
+            _actions.Add(action);
         }
-    }
-    
-    public async UniTask<bool> Invoke(T t, Func<Exception, UniTask<bool>> OnException)
-    {
-        foreach (Action<T> action in _actions)
+
+        public void RemoveListener(Action action)
         {
-            try
+            _actions.Remove(action);
+        }
+
+        public void Invoke()
+        {
+            foreach (Action action in _actions)
             {
-                action.Invoke(t);
-            }
-            catch (Exception e)
-            {
-                APILogger.LogError(e);
-                bool uniTask = await OnException.Invoke(e);
-                if (!uniTask)
+                try
                 {
-                    return false;
+                    action.Invoke();
+                }
+                catch (Exception e)
+                {
+                    APILogger.LogError(e);
                 }
             }
         }
 
-        return true;
+        public void ClearListeners()
+        {
+            _actions.Clear();
+        }
     }
 
-    public bool Invoke(T t, Func<Exception, bool> OnException)
+    public class SafeAction<T>
     {
-        foreach (Action<T> action in _actions)
+        private List<Action<T>> _actions = new List<Action<T>>();
+
+        public void AddListener(Action<T> action)
         {
-            try
+            _actions.Add(action);
+        }
+
+        public void RemoveListener(Action<T> action)
+        {
+            _actions.Remove(action);
+        }
+
+        public void Invoke(T t)
+        {
+            foreach (Action<T> action in _actions)
             {
-                action.Invoke(t);
-            }
-            catch (Exception e)
-            {
-                APILogger.LogError(e);
-                bool uniTask = OnException.Invoke(e);
-                if (!uniTask)
+                try
                 {
-                    return false;
+                    action.Invoke(t);
+                }
+                catch (Exception e)
+                {
+                    APILogger.LogError(e);
                 }
             }
         }
 
-        return true;
-    }
-}
-
-public class SafeAction<T,Y>
-{
-    private List<Action<T,Y>> _actions = new List<Action<T, Y>>();
-    
-    public void AddListener(Action<T,Y> action)
-    {
-        _actions.Add(action);
-    }
-    
-    public void RemoveListener(Action<T,Y> action)
-    {
-        _actions.Remove(action);
-    }
-    
-    public void Invoke(T t, Y y)
-    {
-        foreach (Action<T,Y> action in _actions)
+        public async UniTask<bool> Invoke(T t, Func<Exception, UniTask<bool>> OnException)
         {
-            try
+            foreach (Action<T> action in _actions)
             {
-                action.Invoke(t,y);
+                try
+                {
+                    action.Invoke(t);
+                }
+                catch (Exception e)
+                {
+                    APILogger.LogError(e);
+                    bool uniTask = await OnException.Invoke(e);
+                    if (!uniTask)
+                    {
+                        return false;
+                    }
+                }
             }
-            catch (Exception e)
+
+            return true;
+        }
+
+        public bool Invoke(T t, Func<Exception, bool> OnException)
+        {
+            foreach (Action<T> action in _actions)
             {
-                APILogger.LogError(e);
+                try
+                {
+                    action.Invoke(t);
+                }
+                catch (Exception e)
+                {
+                    APILogger.LogError(e);
+                    bool uniTask = OnException.Invoke(e);
+                    if (!uniTask)
+                    {
+                        return false;
+                    }
+                }
             }
+
+            return true;
         }
     }
-    
-    public async UniTask<bool> Invoke(T t, Y y, Func<Exception, UniTask<bool>> OnException)
+
+    public class SafeAction<T, Y>
     {
-        foreach (Action<T,Y> action in _actions)
+        private List<Action<T, Y>> _actions = new List<Action<T, Y>>();
+
+        public void AddListener(Action<T, Y> action)
         {
-            try
+            _actions.Add(action);
+        }
+
+        public void RemoveListener(Action<T, Y> action)
+        {
+            _actions.Remove(action);
+        }
+
+        public void Invoke(T t, Y y)
+        {
+            foreach (Action<T, Y> action in _actions)
             {
-                action.Invoke(t,y);
-            }
-            catch (Exception e)
-            {
-                APILogger.LogError(e);
-                bool uniTask = await OnException.Invoke(e);
-                if (!uniTask)
+                try
                 {
-                    return false;
+                    action.Invoke(t, y);
+                }
+                catch (Exception e)
+                {
+                    APILogger.LogError(e);
                 }
             }
         }
 
-        return true;
+        public async UniTask<bool> Invoke(T t, Y y, Func<Exception, UniTask<bool>> OnException)
+        {
+            foreach (Action<T, Y> action in _actions)
+            {
+                try
+                {
+                    action.Invoke(t, y);
+                }
+                catch (Exception e)
+                {
+                    APILogger.LogError(e);
+                    bool uniTask = await OnException.Invoke(e);
+                    if (!uniTask)
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        }
     }
 }

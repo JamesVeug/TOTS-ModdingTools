@@ -1,0 +1,109 @@
+:: StoryTitle
+TOTS
+
+
+:: StoryData
+{
+  "ifid": "CEDE849B-B7FC-4128-A660-AB31A5A55627",
+  "format": "Harlowe",
+  "format-version": "3.3.9",
+  "start": "Root MyTale",
+  "zoom": 1
+}
+
+
+:: Dialogue Orlo1_1 {"position":"525,675","size":"100,100"}
+Orlo: Doesn't bother me since I don't garden that much
+
+[[Next->Dialogue Orlo1_2_2]]
+
+
+<!--Emote:Greet-->
+<!--CameraShot:R_Close_Shot-->
+
+
+:: Dialogue Orlo1_2_2 {"position":"525,800","size":"100,100"}
+Orlo: I know Farmer Cotton hates them though
+
+[[Next->Dialogue Orlo1_3]]
+
+
+<!--Emote:Laughter-->
+<!--CameraShot:R_Close_Shot-->
+
+
+:: Dialogue Orlo1_3 {"position":"825,675","size":"100,100"}
+Orlo: Are you having trouble gardening, $Player?
+
+[[Wrong kinda Weed->Dialogue Orlo1_4_1]]
+[[Not at all->Dialogue Orlo1_4_2]]
+
+<!--Emote:Surprise-->
+<!--CameraShot:R_Close_Shot-->
+
+
+:: Dialogue Orlo1_4_1 {"position":"750,825","size":"100,100"}
+$You: Not that kind of Weed
+
+[[Wrong kinda Weed->Dialogue Orlo1_5_1]]
+
+<!--Emote:Mischief-->
+<!--CameraShot:R_Mid_Shot-->
+
+
+:: Dialogue Orlo1_4_2 {"position":"900,825","size":"100,100"}
+$You: Not at all!
+
+[[Next->Dialogue Orlo1_5_2]]
+
+<!--Emote:Confident-->
+<!--CameraShot:R_Mid_Shot-->
+
+
+:: Dialogue Orlo1_5_1 {"position":"750,1000","size":"100,100"}
+Orlo: In that case talk to Gandalf
+
+[[Next->Exit]]
+
+<!--Emote:Amazed-->
+<!--CameraShot:R_Mid_Shot-->
+
+
+:: Dialogue Orlo1_5_2 {"position":"900,1000","size":"100,100"}
+Orlo: Oh thank goodness
+
+[[Next->Exit]]
+
+<!--Emote:Joy-->
+<!--CameraShot:R_Mid_Shot-->
+
+
+:: Exit {"position":"825,1150","size":"100,100"}
+Good bye
+
+
+
+:: Prompt Orlo1 {"position":"375,675","size":"100,100"}
+Prompt Orlo:[[Do you like weed?->Dialogue Orlo1_1]]
+
+
+:: Root MyTale {"position":"900,350","size":"100,100"}
+This is the starting Node.
+
+Add task tracking information so it appears in the TOTS Encyclapedia when it starts!
+Any choices in this will automatically start as soon as the game starts
+
+[[AutoStart->SubQuest StartingTale]]
+
+<!--TaskTrackingDisplayName=MyCustomTale-->
+<!--TaskTrackingDescription=My Custom Tale!-->
+
+
+:: SubQuest StartingTale {"position":"750,475","size":"100,100"}
+This is a SubQuest node that will be the head tracking node for the tale
+When the game starts it will automatically give the player the options inside 'Prompt'
+
+[[AutoStart->Prompt Orlo1]]
+
+<!--TaskTrackingDisplayName=My Tale-->
+<!--TaskTrackingDescription=My Tales Description-->

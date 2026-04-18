@@ -31,7 +31,7 @@ public static class PrefabFactory
         // - - Square (Sprite Renderer component)
         APILogger.LogVerbose("Creating new prefab for " + itemType.name);
         GameObject prefab = new GameObject(itemType.name);
-        prefab.transform.SetParent(Plugin.PrefabContainer);
+        prefab.transform.SetParent(ModdingToolsPlugin.Instance.PrefabContainer);
         ItemComponent itemComponent = prefab.AddComponent<ItemComponent>();
         itemComponent.m_ItemType = itemType;
         

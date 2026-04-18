@@ -17,9 +17,9 @@ using TotS.Schema;
 using TotS.SharedMeals;
 using UnityEngine;
 
-public class ItemTypesLoader
+public class ItemTypeLoader
 {
-    public const string fileExtension = "_itemType.json";
+    public const string fileExtension = "_customisationColor.json";
     
     public static void LoadAll(List<string> files)
     {
@@ -461,7 +461,7 @@ public class ItemTypesLoader
 
                 Apply(itemType, data, false, itemType.name, false);
 
-                string file = Path.Combine(Plugin.ExportPath, "ItemTypes", setName, itemType.name + fileExtension);
+                string file = Path.Combine(ModdingToolsPlugin.ExportPath, "ItemTypes", setName, itemType.name + fileExtension);
                 if (Directory.Exists(Path.GetDirectoryName(file)) == false)
                 {
                     Directory.CreateDirectory(Path.GetDirectoryName(file));
@@ -481,7 +481,7 @@ public class SchemaHasAspectAttribute : SchemaFieldAttribute
     }
 }
 
-[GenerateSchema("ItemTypes", "Anything that goes into an inventory", ItemTypesLoader.fileExtension)]
+[GenerateSchema("ItemTypes", "Anything that goes into an inventory", ItemTypeLoader.fileExtension)]
 public class ItemTypeData : IInitializable
 {
     [SchemaGuid] 
