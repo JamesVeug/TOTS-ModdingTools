@@ -1,6 +1,6 @@
 ﻿{
   "name": "ModdingTools",
-  "version_number": "0.1.2",
+  "version_number": "0.2.0",
   "website_url": "https://www.nexusmods.com/talesoftheshirealordoftheringsgame/mods/3/",
   "description": "Adds tools to make mods with JSON files or api for C#.",
   "dependencies": ["BepInEx-BepInExPack-5.4.2100"]

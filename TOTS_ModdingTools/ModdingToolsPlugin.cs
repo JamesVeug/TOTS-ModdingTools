@@ -21,7 +21,7 @@ internal class ModdingToolsPlugin : BaseUnityPlugin
 {
     public const string PLUGIN_GUID = "TOTS.ModdingTools";
     public const string PLUGIN_NAME = "TOTS Modding Tools";
-    public const string PLUGIN_VERSION = "0.1.2";
+    public const string PLUGIN_VERSION = "0.2.0";
     
     public static SafeAction PostTick = new SafeAction();
     

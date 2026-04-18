@@ -100,6 +100,6 @@
         <Copy SourceFiles="@(ModsFolder)" DestinationFolder="$(BepInExPath)\plugins\%(RecursiveDir)" />
 
         <!-- Run Tales of ther Shire -->
-<!--        <Exec Command='call "$(TOTSPath)/TotS.exe"' IgnoreExitCode="true"/>-->
+        <Exec Command='call "$(TOTSPath)/TotS.exe"' IgnoreExitCode="true"/>
     </Target>
 </Project>
