@@ -1,0 +1,95 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net48</TargetFramework>
+        <AssemblyName>ModdingTools</AssemblyName>
+        <Description>Mod that adds helper methods for other mods and fixes/QOL changes for the game</Description>
+        <Version>0.1.2</Version>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <LangVersion>latest</LangVersion>
+        <BepInExPath>C:\Program Files (x86)\Steam\steamapps\common\TOTS\BepInEx\</BepInExPath> 
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="all" >
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+        <PackageReference Include="BepInEx.Core" Version="5.*" >
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+        <PackageReference Include="BepInEx.PluginInfoProps" Version="1.*" >
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+        <PackageReference Include="UnityEngine.Modules" Version="2022.3.38" IncludeAssets="compile" >
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+    </ItemGroup>
+    
+    <ItemGroup>
+        <PackageReference Include="BepInEx.AssemblyPublicizer.MSBuild" Version="0.4.0">
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+        <Reference Include="$(TOTSPath)/TotS_Data/Managed/Assembly-CSharp.dll" Publicize="true" private="false"/>
+        <Reference Include="$(TOTSPath)/TotS_Data/Managed/Newtonsoft.Json.dll" Publicize="false" private="false" />
+        <Reference Include="$(TOTSPath)/TotS_Data/Managed/Sirenix.Serialization.dll" Publicize="false" private="false" />
+        <Reference Include="$(TOTSPath)/TotS_Data/Managed/Sirenix.Utilities.dll" Publicize="false" private="false" />
+        <Reference Include="$(TOTSPath)/TotS_Data/Managed/UniTask.dll" Publicize="false" private="false"/>
+        <Reference Include="$(TOTSPath)/TotS_Data/Managed/Unity.TextMeshPro.dll" Publicize="false" private="false" />
+        <Reference Include="$(TOTSPath)/TotS_Data/Managed/UnityEngine.UI.dll" Publicize="false" private="false" />
+        <Reference Include="$(TOTSPath)/TotS_Data/Managed/Unity.InputSystem.dll" Publicize="false" private="false" />
+        <Reference Include="$(TOTSPath)/TotS_Data/Managed/UMA_Core.dll" Publicize="false" private="false" />
+        <Reference Include="$(TOTSPath)/TotS_Data/Managed/ArticyRuntime.dll" Publicize="true" private="false" />
+        <Reference Include="$(TOTSPath)/TotS_Data/Managed/Unity.Addressables.dll" Publicize="false" private="false" />
+        <Reference Include="$(TOTSPath)/TotS_Data/Managed/Unity.ResourceManager.dll" Publicize="false" private="false" />
+    </ItemGroup>
+      
+    <ItemGroup>
+        <None Include="assets\*.*">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+      
+    <ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">
+        <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.2" PrivateAssets="all" />
+    </ItemGroup>
+    
+    <Target Name="Deploy" AfterTargets="Build">
+        <ItemGroup>
+            <Assembly Include="$(OutputPath)\$(AssemblyName).dll" />
+            <Assets Include="Assets/*.*" />
+            <Examples Include="Examples/**/*.*" />
+            <ExtraFiles Include="ExtraFiles/*.*" />
+            <Scripts Include="Scripts/*.*" />
+            <SourceCode Include="../**/*.*"
+                       Exclude="../TestApp\**\*.*;../**\bin\**\*.*;../**\obj\**\*.*;../.idea\**\*.*;../.vs\**\*.*;**\*.user"/> 
+        </ItemGroup>
+
+        <!-- clear previous NexusMods package so old files aren't retained -->
+        <RemoveDir Directories="$(OutputPath)\NexusMods" />
+
+        <!-- Create a folder with all the .dlls and files to easily uplaod to nexusmods -->
+        <!-- Mod -->
+        <Copy SourceFiles="@(Assembly)" DestinationFolder="$(OutputPath)\NexusMods\Mod\BepInEx\plugins\ModdingTools" />
+        <Copy SourceFiles="@(Assets)" DestinationFolder="$(OutputPath)\NexusMods\Mod\BepInEx\plugins\ModdingTools\Assets\" />
+        <Copy SourceFiles="@(Examples)" DestinationFolder="$(OutputPath)\NexusMods\Mod\BepInEx\plugins\ModdingTools\Examples\%(RecursiveDir)" />
+        <Copy SourceFiles="CHANGELOG.md" DestinationFolder="$(OutputPath)\NexusMods\Mod\BepInEx\plugins\ModdingTools" />
+        <Copy SourceFiles="README.md" DestinationFolder="$(OutputPath)\NexusMods\Mod\BepInEx\plugins\ModdingTools" />
+        <Copy SourceFiles="manifest.json" DestinationFolder="$(OutputPath)\NexusMods\Mod\BepInEx\plugins\ModdingTools" />
+        <Copy SourceFiles="icon.png" DestinationFolder="$(OutputPath)\NexusMods\Mod\BepInEx\plugins\ModdingTools" />
+        <Copy SourceFiles="@(ExtraFiles)" DestinationFolder="$(OutputPath)\NexusMods\Mod\ExtraFiles" />
+        
+        <!-- SourceCode -->
+        <Copy SourceFiles="@(SourceCode)" DestinationFolder="$(OutputPath)\NexusMods\SourceCode\%(RecursiveDir)" />
+        
+        
+        <!-- Copy mod content over to BepInEx where TalesOfTheShire is installed -->
+        <ItemGroup>
+            <ModsFolder Include="$(OutputPath)\NexusMods\Mod\BepInEx\plugins\**\*.*" />
+        </ItemGroup>
+        <Copy SourceFiles="@(ModsFolder)" DestinationFolder="$(BepInExPath)\plugins\%(RecursiveDir)" />
+
+        <!-- Run Tales of ther Shire -->
+        <Exec Command='call "$(TOTSPath)/TotS.exe"' IgnoreExitCode="true"/>
+    </Target>
+</Project>

@@ -1,0 +1,332 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Reflection;
+using Articy.Tots;
+using Articy.Tots.Features;
+using Articy.Unity;
+using Articy.Unity.Interfaces;
+using HarmonyLib;
+using TOTS_ModdingTools;
+using TotS;
+using TotS.Character.NPCCharacter;
+using TotS.Quests;
+using TotS.Speech;
+
+public static partial class TaleManager
+{
+    [HarmonyPatch(typeof(QuestManager.Quest), MethodType.Constructor, new Type[] { typeof(QuestManager), typeof(ArticyObject) })]
+    [HarmonyPrefix]
+    public static void LogQuestManager(QuestManager owner, ArticyObject articyObject)
+    {
+        APILogger.LogInfo(
+            "QuestManager.Quest Constructor: " + articyObject.technicalName + " (" + articyObject.Id + ")");
+    }
+
+    [HarmonyPatch(typeof(DialoguePlayer), nameof(DialoguePlayer.OnFlowPlayerPaused))]
+    [HarmonyPrefix]
+    public static void DialoguePlayer_OnFlowPlayerPaused(DialoguePlayer __instance, IFlowObject aObject)
+    {
+        string text = "null";
+        if (aObject != null)
+        {
+            text = $"[{aObject.GetType().FullName}] {aObject.ToString()}";
+        }
+
+        APILogger.LogInfo("DialoguePlayer.OnFlowPlayerPaused: " + text);
+    }
+
+    [HarmonyPatch(typeof(DialoguePlayer), nameof(DialoguePlayer.PausedOnDialogueFragment))]
+    [HarmonyPrefix]
+    public static bool DialoguePlayer_PausedOnDialogueFragment(DialoguePlayer __instance, IFlowObject aObject)
+    {
+        APILogger.LogInfo("A");
+        IObjectWithText text = aObject as IObjectWithText;
+        APILogger.LogInfo("B");
+        IObjectWithLocalizableText key = aObject as IObjectWithLocalizableText;
+        APILogger.LogInfo("C");
+        ArticyObject speaker = (ArticyObject)null;
+        APILogger.LogInfo("D");
+        if (aObject is IObjectWithSpeaker objectWithSpeaker)
+        {
+            speaker = objectWithSpeaker.Speaker;
+            APILogger.LogInfo("E");
+            if ((long)speaker.Id == (long)__instance.m_Manager.PlayerArticyRef.id)
+            {
+                APILogger.LogInfo("F");
+                Singleton<PlayerManager>.Instance.ActivePlayer.PlayerHub.PlayerLookable.SetDialoguePriority();
+                APILogger.LogInfo("");
+            }
+            else
+            {
+                APILogger.LogInfo("G");
+                NPCHub npc = Singleton<NPCManager>.Instance.GetNPC(speaker.Id);
+                APILogger.LogInfo("H");
+                if ((UnityEngine.Object)npc != (UnityEngine.Object)null)
+                {
+                    APILogger.LogInfo("I");
+                    npc.NPCLookable.SetDialoguePriority();
+                    APILogger.LogInfo("J");
+                }
+            }
+        }
+
+        APILogger.LogInfo("K");
+        DialogueBlocking blocking = __instance.m_Handle.GetBlocking();
+        CameraShot defaultCameraShot = __instance.m_Manager.DefaultCameraShot;
+        IObjectWithFeatureCameraDirection withFeatureInParent1 =
+            __instance.GetObjectWithFeatureInParent<IObjectWithFeatureCameraDirection>(aObject as ArticyObject);
+        CameraShot cameraShot = (CameraShot)null;
+        if (withFeatureInParent1 != null)
+            cameraShot = withFeatureInParent1.GetFeatureCameraDirection().Shot as CameraShot;
+        if ((UnityEngine.Object)cameraShot == (UnityEngine.Object)null)
+            cameraShot = defaultCameraShot;
+        bool autoSkip = aObject is IObjectWithFeatureNPCDialogueQuestPlaceholder;
+        ArticyObject emote1 = (ArticyObject)null;
+        bool exitEmoteLoop1 = false;
+        ArticyObject emote2 = (ArticyObject)null;
+        bool exitEmoteLoop2 = false;
+        ArticyObject pose = (ArticyObject)null;
+        APILogger.LogInfo("L");
+        IObjectWithFeatureDialogueEmote withFeatureInParent2 =
+            __instance.GetObjectWithFeatureInParent<IObjectWithFeatureDialogueEmote>(aObject as ArticyObject);
+        if (withFeatureInParent2 != null)
+        {
+            APILogger.LogInfo("M");
+            DialogueEmoteFeature featureDialogueEmote = withFeatureInParent2.GetFeatureDialogueEmote();
+            emote1 = featureDialogueEmote.StartingEmote;
+            exitEmoteLoop1 = featureDialogueEmote.ExitStartEmoteLoop;
+            emote2 = featureDialogueEmote.EndingEmote;
+            exitEmoteLoop2 = featureDialogueEmote.ExitEndEmoteLoop;
+            pose = featureDialogueEmote.EmotePose;
+        }
+
+        APILogger.LogInfo("N");
+        List<DialoguePlayer.DialogueNode.ReactionEmoteData> reactionDataSet1 =
+            new List<DialoguePlayer.DialogueNode.ReactionEmoteData>();
+        List<DialoguePlayer.DialogueNode.ReactionEmoteData> reactionDataSet2 =
+            new List<DialoguePlayer.DialogueNode.ReactionEmoteData>();
+        IObjectWithFeatureDialogueReactions withFeatureInParent3 =
+            __instance.GetObjectWithFeatureInParent<IObjectWithFeatureDialogueReactions>(aObject as ArticyObject);
+        if (withFeatureInParent3 != null)
+        {
+            APILogger.LogInfo("O");
+            DialogueReactionsFeature dialogueReactions = withFeatureInParent3.GetFeatureDialogueReactions();
+            if (dialogueReactions.DialogueStartReactionPairs != null &&
+                dialogueReactions.DialogueStartReactionPairs.Count > 0)
+            {
+                for (int index = 0; index <= dialogueReactions.DialogueStartReactionPairs.Count - 2; index += 2)
+                {
+                    DialoguePlayer.DialogueNode.ReactionEmoteData reactionEmoteData =
+                        new DialoguePlayer.DialogueNode.ReactionEmoteData();
+                    reactionEmoteData.SetReactionData(dialogueReactions.DialogueStartReactionPairs[index],
+                        dialogueReactions.DialogueStartReactionPairs[index + 1]);
+                    reactionDataSet1.Add(reactionEmoteData);
+                }
+            }
+
+            if (dialogueReactions.DialogueEndReactionPairs != null &&
+                dialogueReactions.DialogueEndReactionPairs.Count > 0)
+            {
+                for (int index = 0; index <= dialogueReactions.DialogueEndReactionPairs.Count - 2; index += 2)
+                {
+                    DialoguePlayer.DialogueNode.ReactionEmoteData reactionEmoteData =
+                        new DialoguePlayer.DialogueNode.ReactionEmoteData();
+                    reactionEmoteData.SetReactionData(dialogueReactions.DialogueEndReactionPairs[index],
+                        dialogueReactions.DialogueEndReactionPairs[index + 1]);
+                    reactionDataSet2.Add(reactionEmoteData);
+                }
+            }
+        }
+
+        APILogger.LogInfo("P");
+        DialoguePlayer.DialogueNode.EmoteData startEmoteData = new DialoguePlayer.DialogueNode.EmoteData();
+        DialoguePlayer.DialogueNode.EmoteData endEmoteData = new DialoguePlayer.DialogueNode.EmoteData();
+        IObjectWithFeatureDialogueEmoteSpeakerAiming withFeatureInParent4 =
+            __instance.GetObjectWithFeatureInParent<IObjectWithFeatureDialogueEmoteSpeakerAiming>(
+                aObject as ArticyObject);
+        if (withFeatureInParent4 != null)
+        {
+            APILogger.LogInfo("Q");
+            DialogueEmoteSpeakerAimingFeature emoteSpeakerAiming =
+                withFeatureInParent4.GetFeatureDialogueEmoteSpeakerAiming();
+            startEmoteData.SetData(emote1, exitEmoteLoop1, emoteSpeakerAiming.StartingEyeAndHeadAimer,
+                emoteSpeakerAiming.StartingGesturingAimer, emoteSpeakerAiming.StartingEyeAimingActive,
+                emoteSpeakerAiming.StartingHeadAimingActive, emoteSpeakerAiming.StartingAwkwardEyeMovementActive,
+                reactionDataSet1);
+            endEmoteData.SetData(emote2, exitEmoteLoop2, emoteSpeakerAiming.EndingEyeAndHeadAimer,
+                emoteSpeakerAiming.EndingGesturingAimer, emoteSpeakerAiming.EndingEyeAimingActive,
+                emoteSpeakerAiming.EndingHeadAimingActive, emoteSpeakerAiming.EndingAwkwardEyeMovementActive,
+                reactionDataSet2);
+        }
+
+        ArticyObject audioClip = (ArticyObject)null;
+        IObjectWithFeatureDialogueAudio withFeatureInParent5 =
+            __instance.GetObjectWithFeatureInParent<IObjectWithFeatureDialogueAudio>(aObject as ArticyObject);
+        if (withFeatureInParent5 != null)
+        {
+            audioClip = withFeatureInParent5.GetFeatureDialogueAudio().AudioClipEntity;
+        }
+
+        __instance.m_CurrentNode = (DialoguePlayer.Node)new DialoguePlayer.DialogueNode(__instance, speaker, text, key,
+            startEmoteData, endEmoteData, pose, audioClip, cameraShot, blocking, autoSkip);
+
+        APILogger.LogInfo("Z");
+        return false;
+    }
+
+    [HarmonyPatch(typeof(DialoguePlayer.DialogueNode), nameof(DialoguePlayer.DialogueNode.RebuildResponses))]
+    [HarmonyPrefix]
+    public static void DialoguePlayer_RebuildResponses(DialoguePlayer.DialogueNode __instance, IList<Branch> branches)
+    {
+        APILogger.LogInfo("DialoguePlayer.RebuildResponses with " + branches.Count + " branches:");
+        foreach (Branch branch in branches)
+        {
+            string text = "null";
+            if (branch.Target != null)
+            {
+                text = $"[{branch.Target.GetType().FullName}] {branch.Target.ToString()}";
+            }
+
+            APILogger.LogInfo(" - Branch: " + text);
+        }
+    }
+
+    [HarmonyPatch(typeof(QuestManager.Quest), nameof(QuestManager.Quest.CompleteInternal))]
+    [HarmonyPrefix]
+    public static void Quest_CompleteInternal(QuestManager.Quest __instance, List<IOutputPin> outputPins)
+    {
+        APILogger.LogInfo("Quest.CompleteInternal: " + __instance.Name + " (" + __instance.ID + ")");
+        foreach (IOutputPin outputPin in outputPins)
+        {
+            APILogger.LogInfo(" - OutputPin " + outputPin.Id + " with " + outputPin.GetOutgoingConnections().Count +
+                              " connections:");
+            foreach (var outgoingConnection in outputPin.GetOutgoingConnections())
+            {
+                var connection = (OutgoingConnection)outgoingConnection;
+                if (connection != null)
+                {
+                    if (connection.mTarget != null)
+                    {
+                        APILogger.LogInfo("     - To " + connection.mTarget.GetValue().GetDisplayText());
+                    }
+                    else
+                    {
+                        APILogger.LogInfo("     - To null");
+                    }
+                }
+            }
+        }
+    }
+
+    [HarmonyPatch(typeof(Dialogue), nameof(Dialogue.GetInputPins))]
+    [HarmonyPrefix]
+    public static bool Dialogue_GetInputPins(Dialogue __instance)
+    {
+        APILogger.LogInfo("Dialogue.GetInputPins: " + __instance.GetDisplayText());
+        foreach (InputPin pin in __instance.mInputPins.value)
+        {
+            if (pin != null)
+            {
+                APILogger.LogInfo(" - InputPin " + pin.Id + " with " + pin.GetOutgoingConnections().Count +
+                                  " connections:");
+                foreach (var outgoingConnection in pin.GetOutgoingConnections())
+                {
+                    var connection = (OutgoingConnection)outgoingConnection;
+                    if (connection != null)
+                    {
+                        if (connection.mTarget != null)
+                        {
+                            APILogger.LogInfo("     - To " + connection.mTarget.GetValue().GetDisplayText());
+                        }
+                        else
+                        {
+                            APILogger.LogInfo("     - To null");
+                        }
+                    }
+                }
+            }
+            else
+            {
+                APILogger.LogInfo(" - InputPin is null");
+            }
+        }
+
+        return true;
+    }
+
+    [HarmonyPatch(typeof(QuestManager), nameof(QuestManager.Pump))]
+    [HarmonyPrefix]
+    public static void QuestManager_Pump(QuestManager __instance)
+    {
+        string queue = "Pumping queue:";
+        Queue<QuestManager.PumpStep> steps = __instance.m_PumpQueue;
+        if (steps.Count > 0)
+        {
+            foreach (QuestManager.PumpStep step in steps)
+            {
+                // Get field if it's a Quest or AricyObject
+                FieldInfo[] fields = step.GetType()
+                    .GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+
+                ArticyObject articyObject = null;
+                foreach (FieldInfo field in fields)
+                {
+                    if (field.FieldType == typeof(QuestManager.Quest) &&
+                        field.GetValue(step) is QuestManager.Quest quest)
+                    {
+                        articyObject = quest.m_ArticyObject;
+                        queue += $"\n- [{step.GetType().FullName}] " + quest.Name + "(" + quest.ID + ");";
+                    }
+                    else if (field.FieldType == typeof(ArticyObject) &&
+                             field.GetValue(step) is ArticyObject articyObjectCasted)
+                    {
+                        articyObject = articyObjectCasted;
+                        queue += $"\n- [{step.GetType().FullName}] " + articyObjectCasted.technicalName + "(" +
+                                 articyObject.Id + ");";
+                    }
+                    else
+                    {
+                        queue += $"\n- [{step.GetType().FullName}] {step}";
+                    }
+                }
+
+                if (articyObject != null)
+                {
+                    if (articyObject.id == 72057598333689321UL)
+                    {
+                        QuestManager.PumpCompleteQuest quest = step as QuestManager.PumpCompleteQuest;
+                        if (quest != null)
+                        {
+                            foreach (IOutputPin outputPin in quest.m_OutputPins)
+                            {
+                                queue +=
+                                    $"\n    - OutputPin {outputPin.Id} with {outputPin.GetOutgoingConnections().Count} connections:";
+                                foreach (var outgoingConnection in outputPin.GetOutgoingConnections())
+                                {
+                                    var connection = (OutgoingConnection)outgoingConnection;
+                                    if (connection != null)
+                                    {
+                                        if (connection.mTarget != null)
+                                        {
+                                            queue += $"\n        - To {connection.mTarget.GetValue().GetDisplayText()}";
+                                        }
+                                        else
+                                        {
+                                            queue += $"\n        - To null";
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            queue += $"\n    - Is actually of type {step.GetType().FullName}";
+                        }
+                    }
+                }
+            }
+
+            APILogger.LogInfo(queue);
+        }
+    }
+}
