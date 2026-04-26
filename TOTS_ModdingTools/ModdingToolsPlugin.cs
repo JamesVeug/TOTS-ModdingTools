@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using TOTS_ModdingTools.Helpers;
@@ -277,14 +278,19 @@ internal class ModdingToolsPlugin : BaseUnityPlugin
     //     };
     //     config.m_ColorDependencies = config.m_ColorDependencies.ForceAdd(dependency).ToArray();
     // }
-    
-    private static List<string> GetAllJLDRFiles()
+
+    public static List<string> GetFilesInPluginsFolder(string searchPattern)
     {
         string exportedFolder = Path.Combine(JSONLoaderDirectory, "Exported");
         string examplesFolder = Path.Combine(JSONLoaderDirectory, "Examples");
-        return Directory.GetFiles(Paths.PluginPath, "*.json", SearchOption.AllDirectories)
+        return Directory.GetFiles(Paths.PluginPath, searchPattern, SearchOption.AllDirectories)
             .Where(a=> !a.Contains(exportedFolder) && !a.Contains(examplesFolder))
             .ToList();
+    }
+    
+    private static List<string> GetAllJLDRFiles()
+    {
+        return GetFilesInPluginsFolder("*.json");
     }
 
     public static void LoadAllFiles()

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Text;
 using Articy.Tots;
 using Articy.Tots.Features;
 using Articy.Unity;
@@ -11,6 +12,7 @@ using TotS;
 using TotS.Character.NPCCharacter;
 using TotS.Quests;
 using TotS.Speech;
+using UnityEngine;
 
 public static partial class TaleManager
 {
@@ -35,10 +37,48 @@ public static partial class TaleManager
         APILogger.LogVerbose("DialoguePlayer.OnFlowPlayerPaused: " + text);
     }
 
+    [HarmonyPatch(typeof(DialogueManager), "TotS.Speech.DialoguePlayer.IInternalDialogueManager.ShowDialogueLine")]
+    [HarmonyPrefix]
+    public static void DialogueManager_ShowDialogueLine(DialogueManager __instance, 
+        ArticyObject speaker,
+        string speakerName,
+        string localizedText,
+        string key,
+        List<DialoguePlayer.ResponseBranch> responses,
+        DialogueBlocking blocking,
+        CameraShot cameraShot,
+        DialoguePlayer.DialogueNode.EmoteData startEmoteData,
+        DialoguePlayer.DialogueNode.EmoteData endEmoteData,
+        ArticyObject pose,
+        ArticyObject audioClip)
+    {
+        APILogger.LogVerbose("DialogueManager_ShowDialogueLine" +
+                             "\n- speaker: " + speaker +
+                             "\n- speakerName: " + speakerName +
+                             "\n- localizedText: " + localizedText +
+                             "\n- key: " + key +
+                             "\n- cameraShot: " + cameraShot +
+                             "\n- startEmoteData: " + startEmoteData +
+                             "\n- endEmoteData: " + endEmoteData +
+                             "\n- pose: " + pose +
+                             "\n- audioClip: " + audioClip);
+    }
+    
     [HarmonyPatch(typeof(DialoguePlayer), nameof(DialoguePlayer.PausedOnDialogueFragment))]
     [HarmonyPrefix]
     public static bool DialoguePlayer_PausedOnDialogueFragment(DialoguePlayer __instance, IFlowObject aObject)
     {
+        ArticyObject articyObject = aObject as ArticyObject;
+        StringBuilder builder = new StringBuilder();
+        ArticyObject o = articyObject;
+        while (o != null)
+        {
+            builder.Insert(0, $"[{o.GetType().Name}] {o.id}, {o.technicalName}\n");
+            o = o.Parent;
+        }
+        APILogger.LogVerbose(builder.ToString());
+        
+        
         IObjectWithText text = aObject as IObjectWithText;
         IObjectWithLocalizableText key = aObject as IObjectWithLocalizableText;
         ArticyObject speaker = (ArticyObject)null;
@@ -61,8 +101,9 @@ public static partial class TaleManager
 
         DialogueBlocking blocking = __instance.m_Handle.GetBlocking();
         CameraShot defaultCameraShot = __instance.m_Manager.DefaultCameraShot;
+        
         IObjectWithFeatureCameraDirection withFeatureInParent1 =
-            __instance.GetObjectWithFeatureInParent<IObjectWithFeatureCameraDirection>(aObject as ArticyObject);
+            __instance.GetObjectWithFeatureInParent<IObjectWithFeatureCameraDirection>(articyObject);
         CameraShot cameraShot = (CameraShot)null;
         if (withFeatureInParent1 != null)
             cameraShot = withFeatureInParent1.GetFeatureCameraDirection().Shot as CameraShot;
@@ -75,7 +116,7 @@ public static partial class TaleManager
         bool exitEmoteLoop2 = false;
         ArticyObject pose = (ArticyObject)null;
         IObjectWithFeatureDialogueEmote withFeatureInParent2 =
-            __instance.GetObjectWithFeatureInParent<IObjectWithFeatureDialogueEmote>(aObject as ArticyObject);
+            __instance.GetObjectWithFeatureInParent<IObjectWithFeatureDialogueEmote>(articyObject);
         if (withFeatureInParent2 != null)
         {
             DialogueEmoteFeature featureDialogueEmote = withFeatureInParent2.GetFeatureDialogueEmote();
@@ -91,7 +132,7 @@ public static partial class TaleManager
         List<DialoguePlayer.DialogueNode.ReactionEmoteData> reactionDataSet2 =
             new List<DialoguePlayer.DialogueNode.ReactionEmoteData>();
         IObjectWithFeatureDialogueReactions withFeatureInParent3 =
-            __instance.GetObjectWithFeatureInParent<IObjectWithFeatureDialogueReactions>(aObject as ArticyObject);
+            __instance.GetObjectWithFeatureInParent<IObjectWithFeatureDialogueReactions>(articyObject);
         if (withFeatureInParent3 != null)
         {
             DialogueReactionsFeature dialogueReactions = withFeatureInParent3.GetFeatureDialogueReactions();
@@ -126,7 +167,7 @@ public static partial class TaleManager
         DialoguePlayer.DialogueNode.EmoteData endEmoteData = new DialoguePlayer.DialogueNode.EmoteData();
         IObjectWithFeatureDialogueEmoteSpeakerAiming withFeatureInParent4 =
             __instance.GetObjectWithFeatureInParent<IObjectWithFeatureDialogueEmoteSpeakerAiming>(
-                aObject as ArticyObject);
+                articyObject);
         if (withFeatureInParent4 != null)
         {
             DialogueEmoteSpeakerAimingFeature emoteSpeakerAiming =
@@ -142,11 +183,30 @@ public static partial class TaleManager
         }
 
         ArticyObject audioClip = (ArticyObject)null;
-        IObjectWithFeatureDialogueAudio withFeatureInParent5 =
-            __instance.GetObjectWithFeatureInParent<IObjectWithFeatureDialogueAudio>(aObject as ArticyObject);
-        if (withFeatureInParent5 != null)
+        IObjectWithFeatureDialogueAudio iDialogueAudioFeature = __instance.GetObjectWithFeatureInParent<IObjectWithFeatureDialogueAudio>(articyObject);
+        if (iDialogueAudioFeature != null)
         {
-            audioClip = withFeatureInParent5.GetFeatureDialogueAudio().AudioClipEntity;
+            APILogger.LogVerbose("DialoguePlayer_PausedOnDialogueFragment: Found IObjectWithFeatureDialogueAudio with audio clip: " + articyObject.technicalName);
+            audioClip = iDialogueAudioFeature.GetFeatureDialogueAudio().AudioClipEntity;
+            APILogger.LogVerbose("DialoguePlayer_PausedOnDialogueFragment: clip: " + audioClip);
+            if (audioClip == null)
+            {
+                SystemLanguage language = TOTS_ModdingTools.Localization.LocalizationManager.CurrentLanguage;
+                if (voiceLines.TryGetValue(language, articyObject.technicalName, out var audioClipWrapper)
+                    || voiceLines.TryGetValue(SystemLanguage.English, articyObject.technicalName, out audioClipWrapper))
+                {
+                    APILogger.LogVerbose("DialoguePlayer_PausedOnDialogueFragment: Found voice clip: " + audioClip);
+                    audioClip = audioClipWrapper;
+                }
+                else
+                {
+                    APILogger.LogVerbose("DialoguePlayer_PausedOnDialogueFragment: No voice clip found for: " + articyObject.technicalName);
+                }
+            }
+        }
+        else
+        {
+            APILogger.LogVerbose("DialoguePlayer_PausedOnDialogueFragment: Not a audio clip: " + articyObject.technicalName);
         }
 
         __instance.m_CurrentNode = (DialoguePlayer.Node)new DialoguePlayer.DialogueNode(__instance, speaker, text, key,
@@ -181,7 +241,7 @@ public static partial class TaleManager
         APILogger.LogVerbose("Quest.CompleteInternal: " + __instance.Name + " (" + __instance.ID + ")");
         foreach (IOutputPin outputPin in outputPins)
         {
-            APILogger.LogInfo(" - OutputPin " + outputPin.Id + " with " + outputPin.GetOutgoingConnections().Count +
+            APILogger.LogVerbose(" - OutputPin " + outputPin.Id + " with " + outputPin.GetOutgoingConnections().Count +
                               " connections:");
             foreach (var outgoingConnection in outputPin.GetOutgoingConnections())
             {
@@ -211,7 +271,7 @@ public static partial class TaleManager
         {
             if (pin != null)
             {
-                APILogger.LogInfo(" - InputPin " + pin.Id + " with " + pin.GetOutgoingConnections().Count +
+                APILogger.LogVerbose(" - InputPin " + pin.Id + " with " + pin.GetOutgoingConnections().Count +
                                   " connections:");
                 foreach (var outgoingConnection in pin.GetOutgoingConnections())
                 {
@@ -220,11 +280,11 @@ public static partial class TaleManager
                     {
                         if (connection.mTarget != null)
                         {
-                            APILogger.LogInfo("     - To " + connection.mTarget.GetValue().GetDisplayText());
+                            APILogger.LogVerbose("     - To " + connection.mTarget.GetValue().GetDisplayText());
                         }
                         else
                         {
-                            APILogger.LogInfo("     - To null");
+                            APILogger.LogVerbose("     - To null");
                         }
                     }
                 }

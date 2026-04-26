@@ -31,6 +31,7 @@ public static partial class LocalizationManager
         
         APILogger.LogError($"Changed language to {aLanguage}");
         m_currentLanguageCode = aLanguage;
+        m_currentLanguage = CodeToLanguage(aLanguage);
         if (m_isInitialized)
         {
             SystemLanguage systemLanguage = CodeToLanguage(aLanguage);

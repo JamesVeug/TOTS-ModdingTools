@@ -1,15 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Articy.Tots;
-using Articy.Tots.Features;
-using Articy.Tots.Templates;
 using Articy.Unity;
 using Articy.Unity.Interfaces;
 using HarmonyLib;
 using TOTS_ModdingTools;
 using TotS;
-using TotS.Events;
-using TotS.Quests;
 using UnityEngine;
 using NPCDialogue = Articy.Tots.NPCDialogue;
 using Object = UnityEngine.Object;
@@ -183,6 +178,7 @@ public static partial class TaleManager
         }
     }
     
+    private static LocalizedDictionary<string, ArticyObjectVoiceLine> voiceLines = new LocalizedDictionary<string, ArticyObjectVoiceLine>();
     [HarmonyPatch(typeof(LocalizationManager), nameof(LocalizationManager.Initialized), MethodType.Setter)]
     [HarmonyPostfix]
     public static void PostLoadPackages(LocalizationManager __instance)
@@ -192,6 +188,8 @@ public static partial class TaleManager
             // NOTE: DISABLED UNTIL I COMPLETE PARSING OF TWEE FILE
             // NOTE: Not completed because the tots modding community is non-existent and I want to release everything
             // AddTestDialogue();
+
+            LoadAllVoiceLines();
         }
     }
 

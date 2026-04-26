@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using Articy.Unity;
 using TOTS_ModdingTools.Helpers;
 using UnityEngine;
@@ -36,10 +35,12 @@ public static partial class LocalizationManager
     };
     
     private static readonly Dictionary<string, Dictionary<SystemLanguage, string>> s_pendingLanguageStrings = new();
-    
     private static readonly Dictionary<string, Dictionary<SystemLanguage, string>> s_newStrings = new();
+    
+    public static SystemLanguage CurrentLanguage => m_currentLanguage; 
 
     private static string m_currentLanguageCode = "en";
+    private static SystemLanguage m_currentLanguage = SystemLanguage.English;
     private static bool m_isInitialized = false;
     private static bool m_isDirty = false;
 
