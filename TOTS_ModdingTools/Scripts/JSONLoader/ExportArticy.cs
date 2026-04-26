@@ -4,11 +4,13 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Articy.Unity;
+using Articy.Unity.Interfaces;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using TOTS_ModdingTools;
 using TotS.Utils;
 using UnityEngine;
+using Path = System.IO.Path;
 
 public class ExportArticy
 {
@@ -69,23 +71,26 @@ public class ExportArticy
         APILogger.LogInfo($"Exporting {packages.Length} packages as {stringTables.Count} stringTables");
 
 
-        foreach (KeyValuePair<string, List<(string, ArticyLocalizationPackage)>> table in stringTables)
+        // KeySorter sorter = new KeySorter();
+        foreach (var (tableName, table) in stringTables)
         {
             HashSet<string> keys = new HashSet<string>();
-            foreach ((string, ArticyLocalizationPackage) pair in table.Value)
+            foreach ((string, ArticyLocalizationPackage) pair in table)
             {
                 keys.AddRange(pair.Item2.LocaKeys);
             }
             
-            string[] sortedKeys = keys.OrderBy(a => a).ToArray();
+            List<string> sortedKeys = keys.ToList();
+            sortedKeys.Sort((a,b)=>a.CompareTo(b));
+            
             CSVBuilder builder = new CSVBuilder();
             foreach (string key in sortedKeys)
             {
                 builder.AddValue("Key", key, 0);
 
-                for (var i = 0; i < table.Value.Count; i++)
+                for (var i = 0; i < table.Count; i++)
                 {
-                    var (languageCode, package) = table.Value[i];
+                    var (languageCode, package) = table[i];
                     int index = package.mLocaKeys.IndexOf(key);
                     if (index >= 0)
                     {
@@ -105,9 +110,121 @@ public class ExportArticy
                 Directory.CreateDirectory(directory);
             }
             
-            string stringTablePath = Path.Combine(directory, $"{table.Key}.csv");
+            string stringTablePath = Path.Combine(directory, $"{tableName}.csv");
             builder.SaveAsCSV(stringTablePath);
             APILogger.LogInfo("StringTable saved to: " + stringTablePath);
+        }
+
+    }
+    
+    /// <summary>
+    /// Works but not perfect
+    /// Sorting might not be deterministic enough and need sorting by parent properly or something like that.
+    /// Too tired rn to get it working
+    /// </summary>
+    private class KeySorter
+    {
+        private Dictionary<string, ArticyObject> _localizableObjects = new Dictionary<string, ArticyObject>();
+        public KeySorter()
+        {
+            _localizableObjects = new Dictionary<string, ArticyObject>();
+
+            Add(ArticyDatabase.Instance.mLiveObjects);
+            void Add(List<ArticyObject> objects)
+            {
+                APILogger.LogInfo("add " + objects.Count); // <--- #ForFutureJames: This is 0. So that's why everything breaks
+                foreach (ArticyObject articyObject in objects)
+                {
+                    if (articyObject is IObjectWithLocalizableText localizableText)
+                    {
+                        _localizableObjects[localizableText.LocaKey_Text] = articyObject;
+                    }
+
+                    // Add(articyObject.children);
+                }
+            }
+
+            APILogger.LogInfo("_localizableObjects has " + _localizableObjects.Count); // <--- #ForFutureJames: This is 0. So that's why everything breaks
+        }
+        
+        public int Compare(string localeKeyA, string localeKeyB)
+        {
+            if (!_localizableObjects.TryGetValue(localeKeyA, out ArticyObject objA) || !_localizableObjects.TryGetValue(localeKeyB, out ArticyObject objB))
+            {
+                return string.Compare(localeKeyA, localeKeyB, StringComparison.Ordinal);
+            }
+            
+            if (objA.ParentId == objB.ParentId)
+            {
+                GetChildIndexes(objA, objB, out int indexA, out int indexB);
+                return indexA.CompareTo(indexB);
+            }
+            
+            return objA.ParentId.CompareTo(objB.ParentId);
+        }
+
+        private bool HasChild(ArticyObject objA, ArticyObject objB)
+        {
+            if (objA.children.Contains(objB))
+            {
+                return true;
+            }
+
+            foreach (ArticyObject child in objA.children)
+            {
+                if (HasChild(child, objB))
+                {
+                    return true;
+                }
+            }
+            
+            return false;
+        }
+
+        private void GetChildIndexes(ArticyObject objA, ArticyObject objB, out int aIndex, out int bIndex)
+        {
+            aIndex = objA.Parent.children.IndexOf(objA);
+            bIndex = objB.Parent.children.IndexOf(objB);
+        }
+        
+        private void GetChildIndexesDeprecated(ArticyObject objA, ArticyObject objB, out int aIndex, out int bIndex)
+        {
+            aIndex = -1;
+            bIndex = -1;
+            
+            ulong a = objA.id;
+            ulong b = objB.id;
+            
+            ArticyObject aParent = objA.Parent;
+            IInputPinsOwner pinsOwner = (IInputPinsOwner)aParent;
+            foreach (IInputPin inputPin in pinsOwner.GetInputPins())
+            {
+                foreach (IOutgoingConnection connection in inputPin.GetOutgoingConnections())
+                {
+                    int depth = 0;
+                    if (connection.Target.id == a)
+                    {
+                        aIndex = depth;
+                    }
+                    if (connection.Target.id == b)
+                    {
+                        bIndex = depth;
+                    }
+
+                    IOutputPinsOwner connectionTarget = (IOutputPinsOwner)connection.Target;
+                    foreach (IOutputPin pin in connectionTarget.GetOutputPins())
+                    {
+                        foreach (IOutgoingConnection outgoingConnection in pin.GetOutgoingConnections())
+                        {
+                            if (outgoingConnection.TargetPin == a)
+                            {
+                                
+                            }
+                            
+                        }
+                    }
+                }
+            }
         }
     }
 }
