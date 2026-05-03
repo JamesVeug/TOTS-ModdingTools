@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Articy.Tots;
 using Articy.Unity;
 using Articy.Unity.Interfaces;
 using Newtonsoft.Json;
@@ -71,8 +72,24 @@ public class ExportArticy
         APILogger.LogInfo($"Exporting {packages.Length} packages as {stringTables.Count} stringTables");
 
 
-        // KeySorter sorter = new KeySorter();
-        foreach (var (tableName, table) in stringTables)
+        foreach (var pair in stringTables)
+        {
+            List<(string, ArticyLocalizationPackage)> tuples = pair.Value;
+            tuples.Sort((a,b)=>a.Item1.CompareTo(b.Item1));
+            
+            int englishIndex = tuples.FindIndex(a=>a.Item1 == "en");
+            if (englishIndex > 0)
+            {
+                var cache = tuples[englishIndex];
+                tuples.RemoveAt(englishIndex);
+                tuples.Insert(0, cache);
+            }
+        }
+
+
+
+        KeySorter sorter = new KeySorter();
+        foreach ( var(tableName, table) in stringTables)
         {
             HashSet<string> keys = new HashSet<string>();
             foreach ((string, ArticyLocalizationPackage) pair in table)
@@ -87,6 +104,19 @@ public class ExportArticy
             foreach (string key in sortedKeys)
             {
                 builder.AddValue("Key", key, 0);
+                if (sorter.GetArticyObjectFromKey(key, out ArticyObject articyObject))
+                {
+                    sorter.GetQuestNameAndSpeaker(articyObject, out string questName, out string speaker);
+                    builder.AddValue("Quest", questName, 1);
+                    builder.AddValue("Speaker", speaker, 2);
+                }
+                else
+                {
+                    builder.AddValue("Quest", "", 1);
+                    builder.AddValue("Speaker", "", 2);
+                    
+                }
+                
 
                 for (var i = 0; i < table.Count; i++)
                 {
@@ -94,11 +124,11 @@ public class ExportArticy
                     int index = package.mLocaKeys.IndexOf(key);
                     if (index >= 0)
                     {
-                        builder.AddValue(languageCode, package.mLocaValues[index], 1 + i);
+                        builder.AddValue(languageCode, package.mLocaValues[index], 3 + i);
                     }
                     else
                     {
-                        builder.AddValue(languageCode, "", 1 + i);
+                        builder.AddValue(languageCode, "", 3 + i);
                     }
                 }
                 builder.NextRow();
@@ -146,10 +176,15 @@ public class ExportArticy
 
             APILogger.LogInfo("_localizableObjects has " + _localizableObjects.Count); // <--- #ForFutureJames: This is 0. So that's why everything breaks
         }
+
+        public bool GetArticyObjectFromKey(string key, out ArticyObject articyObject)
+        {
+            return _localizableObjects.TryGetValue(key, out articyObject);
+        }
         
         public int Compare(string localeKeyA, string localeKeyB)
         {
-            if (!_localizableObjects.TryGetValue(localeKeyA, out ArticyObject objA) || !_localizableObjects.TryGetValue(localeKeyB, out ArticyObject objB))
+            if (!GetArticyObjectFromKey(localeKeyA, out ArticyObject objA) || !GetArticyObjectFromKey(localeKeyB, out ArticyObject objB))
             {
                 return string.Compare(localeKeyA, localeKeyB, StringComparison.Ordinal);
             }
@@ -224,6 +259,34 @@ public class ExportArticy
                         }
                     }
                 }
+            }
+        }
+
+        public void GetQuestNameAndSpeaker(ArticyObject articyObject, out string questName, out string speakerName)
+        {
+            questName = "";
+            speakerName = "";
+            if (articyObject is IObjectWithSpeaker iSpeaker)
+            {
+                if (iSpeaker.Speaker != null && iSpeaker.Speaker is IObjectWithDisplayName objectWithDisplayName)
+                {
+                    speakerName = ArticyTextExtension.Resolve(objectWithDisplayName.DisplayName);
+                }
+            }
+            else
+            {
+                Debug.Log("Speaker not found for object: " + articyObject.GetType().Name);
+            }
+            
+            ArticyObject p = articyObject;
+            while(p != null)
+            {
+                if (p is IObjectWithFeatureTaskTrackerRoot s)
+                {
+                    questName = s.GetFeatureTaskTrackerRoot().TaskTrackerDisplayName;
+                    break;
+                }
+                p = p.Parent;
             }
         }
     }
