@@ -3,7 +3,7 @@
     public static class EventBus
     {
         /// <summary>
-        /// Invoked when Against the Storm starts and all the data has been initialized.
+        /// Invoked when Tales of the Shire starts and all the data has been initialized.
         /// </summary>
         public static readonly SafeAction OnInitReferences = new SafeAction();
 

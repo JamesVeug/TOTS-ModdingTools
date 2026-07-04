@@ -25,7 +25,7 @@ public class GenerateSchemaAttribute : Attribute
 
         if (!string.IsNullOrEmpty(FileExtension))
         {
-            description += "\n\nFor JSONLoader to load this file into Against the Storm create a file on your computer ending with " + FileExtension + " and paste the contents of the JSON inside. Example: \"MyFile" + FileExtension + "\"";
+            description += "\n\nFor JSONLoader to load this file into Tales of the Shire create a file on your computer ending with " + FileExtension + " and paste the contents of the JSON inside. Example: \"MyFile" + FileExtension + "\"";
         }
         return description;
     }

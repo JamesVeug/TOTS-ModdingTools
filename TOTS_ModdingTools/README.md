@@ -301,6 +301,6 @@ Example:
 Look in loc_tales.csv for "Why, Bless my Butter"
 Note the technical name "DFr_FFAD5DBE.Text" (We just want "DFr_FFAD5DBE")
 
-- Create a .wav file of the sound you want to play and name it DFr_FFAD5DBE.wav.
+- Create a .wav file of the sound you want to play and name it DFr_FFAD5DBE_en.wav (_en indicates English)
 - Put it somewhere in the plugins folder
 - The sound should not play next time you open the game.
