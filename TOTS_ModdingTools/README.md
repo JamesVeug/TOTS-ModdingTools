@@ -266,7 +266,7 @@ Supports
 
 > Note: After these steps the Recipe should work in-game and appear as a recipe when at the cooking station.
 
-### 5.  Make a Villager sell your new item or existing item
+### 4.4  Make a Villager sell your new item or existing item
 - Do the steps in #2 if you haven't yet
 - Copy an existing shopStock.json file from the Exported folder that is similar to what you want
   - eg: `Young_Tom_Cotton_Ingredient_Milk_shopStock.json`
@@ -281,7 +281,7 @@ Supports
 > Note: After these steps the NPC should now sell your item in-game AFTER they have restocked and met your relationship level
 
 
-### 6.  My thing didn't work. What do I do? HELP!
+### 4.5  My thing didn't work. What do I do? HELP!
 - Look at the BepInEx console for any red errors that show up. That should give clues to what went wrong
   - Or load the log file in a text editor and look for errors: `TOTS\BepInEx\LogOutput.log`
 - Common problems are
@@ -291,3 +291,16 @@ Supports
   - Dimensions of images are not correct or your image is missing or incorrectly names in the .json
 - Join the discord and ask for help
   - https://discord.gg/ShaC59Hj
+
+
+## 5. How to play audio during dialogue
+- Do an Export of the game files. See `#2. How to export information from the game`
+- Look for the dialogue you want to play by looking in TOTS\BepInEx\plugins\ModdingTools\Exported\StringTables
+
+Example: 
+Look in loc_tales.csv for "Why, Bless my Butter"
+Note the technical name "DFr_FFAD5DBE.Text" (We just want "DFr_FFAD5DBE")
+
+- Create a .wav file of the sound you want to play and name it DFr_FFAD5DBE.wav.
+- Put it somewhere in the plugins folder
+- The sound should not play next time you open the game.

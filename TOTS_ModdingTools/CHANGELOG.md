@@ -2,6 +2,8 @@
 - Added support to add new eye colors via JSON
 - Added support to add new hair colors via JSON
 - Added support to add custom save data
+- Can now play audio during dialogue by putting .wav files with the na me of the dialogues technical name
+- Exporting now exports string tables
 
 # 0.1.2
 - Fixed Exporting only exporting Articy and nothing else
