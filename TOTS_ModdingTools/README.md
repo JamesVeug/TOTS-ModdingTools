@@ -1,34 +1,28 @@
-# Tales of the Shire Modding Tools
-
+Tales of the Shire Modding Tools
 Welcome to the unofficial modding tools for Tales of the Shire!
-
-This mod provides tools for you to 
-- Extract files from the game
-- Modify parts of the game using .json files 
-- Add new things to the game.
-
+This mod provides tools for you to
+Extract data/images from the game
+Modify parts of the game using .json files
+Add new things to the game.
 Supports
-- Adding/modifying Ingredients (Milk, Flour, Apples... etc)
-- Adding/modifying Meals (Bread, Crispy Fish Pie... etc)
-- Adding/modifying Recipes (Bread Recipe, Crispy Fish Pie Recipe... etc)
-- Adding/modifying things for villagers to sell
-
-
-## 1. How to install
-1. Install v5.4.21 of [BepInEx](https://github.com/BepInEx/BepInEx/releases/tag/v5.4.21)
-    - Extract the contents of the zip into `Steam\steamapps\common\TOTS` folder that has the games `TotS.exe` in it
-    - You should now have
-      - A folder called `TOTS/BepInEx`
-      - A file called `TOTS/doorstop_config.ini`
-2. Install the [Modding Tools mod](https://www.nexusmods.com/talesoftheshirealordoftheringsgame/mods/3)
-    - Extract the contents of the zip into the `TOTS` folder
-    - You should have
-      - A folder called `TOTS/BepInEx/plugins/ModdingTools` with files in it
-      - A folder called `TOTS/BepInEx/ExtraFiles` with ~8 files in it
-   - Open `TOTS/doorstop_config.ini` with a text editor like NotePad
-       - Change `dllSearchPathOverride=` to `dll_search_path_override = "ExtraFiles"`
-3. Run the game
-4. Confirm the settings menu has a Mods tab. If so then it installed correctly!
+Adding/modifying Ingredients (Milk, Flour, Apples... etc)
+Adding/modifying Meals (Bread, Crispy Fish Pie... etc)
+Adding/modifying Recipes (Bread Recipe, Crispy Fish Pie Recipe... etc)
+Adding/modifying things for villagers to sell
+Adding/modifying eye/hair color
+Adding audio to dialogue (ie: When characters talk!)
+1. How to install
+   Install BepInEx Pack for Tales of the Shire
+   Extract the contents of the zip into 'Steam\steamapps\common\TOTS'. The folder that has the games TotS.exe in it
+   You should now have
+   A folder called TOTS/BepInEx
+   Plus a few more files and folders in the TOTS folder
+   Install the Modding Tools mod
+   Extract the contents of the zip into the TOTS folder
+   You should have
+   A folder called TOTS/BepInEx/plugins/ModdingTools with files in it
+   Run the game
+   You should get a terminal window show up and a new tab in the settings menu of the game called 'Mods'. If so then it installed correctly!
 
 ## 2. How to export information from the game
 - Install BepInEx and Modding tools in #1
